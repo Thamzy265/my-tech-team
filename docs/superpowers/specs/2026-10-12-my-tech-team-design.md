@@ -23,6 +23,8 @@ The human user is the **project manager (PM)** and is not a skill.
 | Developer skill | Kept lean. The lead plans (system design note, UI spec, privacy screen). The reviewer and QA check security and privacy |
 | Security | A security review on every branch, **and** a feature-level security review when a feature is complete |
 | Privacy scope | UK + EU by default (UK GDPR, DPA 2018 as amended by DUAA 2025, PECR, EU GDPR, ePrivacy). Projects can add other regions |
+| Lifecycle | Iterative. Each milestone passes through plan → design → build → test → release → maintain, in small batches |
+| MVP first | Build only the essentials for the current phase. Defer scaling and nice-to-haves to a "Later" list with triggers. Never defer the non-negotiables (see below) |
 | Packaging | One plugin with every role, served from a marketplace in the same repo |
 | Scope | Generic. Project rules stay in each project's CLAUDE.md or AGENTS.md |
 | Marketer jobs | Market and competitor research; launch and release comms; content drafting |
@@ -38,6 +40,67 @@ The human user is the **project manager (PM)** and is not a skill.
 | `team-reviewer` | Code review, design-quality review, **security review** (per branch and per feature), **privacy-in-code review** |
 | `team-qa` | Real-flow acceptance; PM check steps; manual accessibility pass; **privacy checks in the real product**; marketing claim check |
 | `team-marketer` | Research, launch and release comms, content in the brand voice, **marketing privacy rules** |
+
+## Lifecycle and project phases
+
+### Iterative lifecycle
+
+Each milestone goes through every stage. The next milestone starts with what the team learned.
+
+| Stage | Who | What happens |
+|---|---|---|
+| Plan | Lead, PM | Pick the milestone items; acceptance criteria; open decisions go to the PM |
+| Design | Lead | Sizing; system design note, UI spec and privacy screen when needed |
+| Build | Developer | Test-first, to the brief |
+| Test | Tester, reviewer, QA | Break it; code, security and privacy review; real-flow acceptance |
+| Release | Lead, PM | Feature-level security review; release notes and version tag; rollback plan; the PM approves the release; the marketer drafts comms |
+| Maintain | Lead | Sort incoming bugs; dependency and security updates; check the Later list triggers; feed lessons into the next Plan |
+
+### Project phase
+
+The project's Team setup records the phase: `MVP` (default), `Growth` or `Scale`. **Only the PM changes the phase.** The lead and the developer build only what the current phase needs.
+
+**Can wait until after the MVP:**
+- caching, replication, sharding, read replicas, and queues added only for scale
+- microservices (stay a modular monolith)
+- formal SLOs and dashboards (a health check and error logs are enough)
+- performance tuning beyond the agreed basic budget
+- nice-to-have features, settings and integrations
+
+**Never deferred, in any phase:**
+- security basics: authorisation on every endpoint and object, no secrets in code, dependency checks
+- privacy: data minimisation, retention, delete and export, consent
+- data integrity: constraints, reversible migrations, backups
+- timeouts and safe retries on outbound calls
+- tests, review and QA
+- basic accessibility
+
+**Don't block the future.** Deferring is fine; making the deferred work impossible is not. The MVP keeps:
+- config in env
+- stateless processes
+- a clean API contract
+- a sensible data model
+
+The lead spends real design effort only on decisions that are expensive to undo.
+
+### The Later list
+
+Every deferral gets one line in the **Later** section of `docs/PLAN.md`:
+
+```markdown
+- <what was deferred> — <why> — trigger: <measurable condition> — noted <date> by <role>
+```
+
+Example:
+
+```markdown
+- Response caching for /search — not needed at MVP load — trigger: p95 > 500 ms or > 1,000 daily users — noted 2026-10-12 by developer
+```
+
+- The developer and the reviewer add a line whenever they skip something for the phase.
+- A deferral without a trigger is not allowed.
+- In the Maintain stage the lead checks the triggers, and reports any that fired under "Needs you".
+- When the PM changes the phase, the lead reviews the whole list with the PM and turns the chosen items into plan items.
 
 ## Workflow
 
@@ -59,6 +122,7 @@ reviewer: feature-level security review of the combined result on main
   (cross-branch issues: authorisation gaps between API and UI, data exposed by the combination, dependency changes)
   → developer fixes on a new branch (normal loop)
   → lead marks the feature done only after this passes
+  → lead: release notes, version tag, rollback plan → PM approves the release
   → marketer: launch / release comms → QA claim check → PM approves (PM publishes)
 ```
 
@@ -163,6 +227,8 @@ Each project adds a short **Team setup** section to CLAUDE.md or AGENTS.md. Skil
 | UI specs | `docs/ui/` |
 | Marketing and brand voice | `docs/marketing/`, `docs/marketing/voice.md` |
 | Privacy regions | UK + EU |
+| Project phase | `MVP` |
+| Later list | "Later" section of `docs/PLAN.md` |
 | Check command | Ask the PM on first run, then record it |
 | Project-specific rules for review and test | Listed in the project file |
 
@@ -179,6 +245,7 @@ Each project adds a short **Team setup** section to CLAUDE.md or AGENTS.md. Skil
 - New lines:
   - **Design**: a design note, UI spec or ADR changed.
   - **Security & privacy**: open findings, and items waiting for a PM decision.
+  - **Later list**: items added since the last update, and any triggers that fired.
   - **Marketing**: drafts waiting for approval.
 - The "How you can check it" rules move to `references/check-steps.md`.
 
@@ -208,6 +275,8 @@ CHANGELOG.md, LICENSE (MIT)
 - `skills-ref validate` on every skill, and `claude plugin validate . --strict` on the repo, both in CI.
 - **Pressure tests (writing-skills):** give a fresh agent each skill and a small sample project, and fix the gaps it reports. Scenarios:
   - the lead is tempted to skip a gate or the design note
+  - in the MVP phase, the developer is tempted to add caching "while I'm here", which should become a Later line with a trigger
+  - in the MVP phase, someone suggests deferring a deletion job or an authorisation check, which is never allowed
   - the lead plans a feature that adds personal data fields
   - the developer gets a UI spec with no error states
   - the reviewer is asked to "just approve" a High finding
