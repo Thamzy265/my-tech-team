@@ -1,6 +1,6 @@
 # my-tech-team
 
-Team-role Agent Skills for AI coding agents. The skills give an agent a lead, a UI/UX designer, a frontend developer, a backend developer, a tester, a code reviewer, a security engineer, QA and a marketer. You are the project manager.
+Team-role Agent Skills for AI coding agents. The skills give an agent a lead, a developer, a tester, a reviewer, QA and a marketer. The roles include UI/UX and system design practice. You are the project manager.
 
 **Status:** design stage. The skills are not ready to install yet.
 
