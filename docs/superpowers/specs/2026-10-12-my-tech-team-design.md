@@ -126,6 +126,26 @@ reviewer: feature-level security review of the combined result on main
   → marketer: launch / release comms → QA claim check → PM approves (PM publishes)
 ```
 
+### Slides for large items
+
+For every **large** item, and every new milestone plan, the lead makes a slide deck **before** briefing the developer. The PM must approve it before work starts.
+
+- **File:** `docs/slides/<item>.html`, copied from `skills/team-lead/assets/deck-template.html`.
+  - The template is one self-contained HTML file: no external scripts, fonts or trackers.
+  - It supports arrow-key navigation, light and dark themes, and print to PDF.
+- **Slides, in this order:**
+  1. the problem and who it is for
+  2. scope for this phase and what is deferred (Later lines)
+  3. two design options and the recommendation
+  4. data and privacy
+  5. security (trust boundaries, abuse cases)
+  6. risks
+  7. the plan and how the PM will check it
+  8. decisions needed from the PM
+- **Plain language.** At most about 6 bullets per slide. Evidence goes in small print.
+- **How the PM sees it:** the lead gives the PM the path and asks for approval. *On Claude Code:* open it in the browser pane, or send it as a rendered file.
+- The repo includes the deck for this system: `docs/slides/my-tech-team.html`.
+
 ### Sizing
 
 - **Small:** one module, with no new data store, external integration, trust boundary or personal data field. A small item skips the design note and the privacy screen.
@@ -254,7 +274,9 @@ Each project adds a short **Team setup** section to CLAUDE.md or AGENTS.md. Skil
 ```
 .claude-plugin/marketplace.json   marketplace "my-tech-team", one plugin, source "./"
 .claude-plugin/plugin.json        name, version, description, author, repository, license MIT
-skills/team-lead/                 SKILL.md + references/system-design.md, ui-spec.md, privacy.md, pm-update.md, check-steps.md
+skills/team-lead/                 SKILL.md + references/system-design.md, ui-spec.md, privacy.md, pm-update.md, check-steps.md, slides.md
+                                  + assets/deck-template.html
+docs/slides/my-tech-team.html     the deck that explains this system
 skills/team-developer/            SKILL.md + references/data-and-apis.md, ui-build.md
 skills/team-tester/               SKILL.md
 skills/team-reviewer/             SKILL.md + references/security.md (includes privacy in code)
@@ -275,6 +297,7 @@ CHANGELOG.md, LICENSE (MIT)
 - `skills-ref validate` on every skill, and `claude plugin validate . --strict` on the repo, both in CI.
 - **Pressure tests (writing-skills):** give a fresh agent each skill and a small sample project, and fix the gaps it reports. Scenarios:
   - the lead is tempted to skip a gate or the design note
+  - the lead plans a large item and is tempted to send only a text summary instead of the deck
   - in the MVP phase, the developer is tempted to add caching "while I'm here", which should become a Later line with a trigger
   - in the MVP phase, someone suggests deferring a deletion job or an authorisation check, which is never allowed
   - the lead plans a feature that adds personal data fields
