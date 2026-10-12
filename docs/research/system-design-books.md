@@ -49,7 +49,7 @@ Run this before a significant feature. For small items, steps 1, 6, 8 and 11 are
 7. Define module and API boundaries as deep modules, with versioning and backward compatibility. (Ousterhout; Newman)
 8. Plan for failure: timeouts, bounded retries with jitter, idempotency, and circuit breakers where they are justified. (Nygard; Vitillo)
 9. Define SLIs/SLOs and observability. (SRE books)
-10. Hand trust boundaries to the security engineer for threat modelling.
+10. List trust boundaries and where untrusted data enters, plus abuse cases. The reviewer checks against this list in the security review.
 11. Plan the rollout: expand-contract migrations, feature flags, small batches, a rollback path. (Evolutionary Architectures; DORA)
 12. Write an ADR and add fitness functions or tests that protect the chosen characteristics. (Fundamentals of SA; Evolutionary Architectures)
 
