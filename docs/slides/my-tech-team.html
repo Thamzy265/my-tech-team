@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my-tech-team</title>
+<!--
+  Deck template: one self-contained file. No external scripts, fonts or trackers.
+  Each <section class="slide"> is one slide. Keys: → ↓ Space PageDown = next; ← ↑ PageUp = back;
+  Home/End = first/last. URL hash (#3) links to a slide. Print (Cmd/Ctrl+P) gives one slide per page.
+-->
+<style>
+  :root {
+    --bg: #f7f6f2; --surface: #ffffff; --text: #1d1d1b; --muted: #5f5e58;
+    --line: #dedcd3; --accent: #c2512f; --accent-soft: #f6e3dc;
+    --ok: #2f7a4f; --ok-soft: #dcefe3; --warn: #9a6a00; --warn-soft: #f7ecd2;
+    --no: #a33a3a; --no-soft: #f6dcdc;
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --surface: #201f1c; --text: #ecebe6; --muted: #a8a69e;
+      --line: #36352f; --accent: #e8805f; --accent-soft: #3a2620;
+      --ok: #6cc290; --ok-soft: #1d3326; --warn: #e0b04d; --warn-soft: #3a3020;
+      --no: #e57f7f; --no-soft: #3d2222;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --surface: #201f1c; --text: #ecebe6; --muted: #a8a69e;
+    --line: #36352f; --accent: #e8805f; --accent-soft: #3a2620;
+    --ok: #6cc290; --ok-soft: #1d3326; --warn: #e0b04d; --warn-soft: #3a3020;
+    --no: #e57f7f; --no-soft: #3d2222;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.45; }
+
+  .slide { display: none; min-height: 100vh; padding: clamp(24px, 6vh, 64px) clamp(16px, 7vw, 96px) 88px; flex-direction: column; justify-content: center; }
+  .slide.active { display: flex; }
+  .slide > .inner { width: 100%; max-width: 1080px; margin: 0 auto; }
+
+  .kicker { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-size: clamp(34px, 6vw, 64px); line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(26px, 4vw, 40px); line-height: 1.12; margin: 0 0 22px; letter-spacing: -0.01em; }
+  h3 { font-size: 17px; margin: 0 0 8px; }
+  p, li { font-size: clamp(16px, 1.6vw, 20px); }
+  p.lead { font-size: clamp(18px, 2.1vw, 24px); color: var(--muted); max-width: 46ch; }
+  ul { margin: 0; padding-left: 1.2em; } li { margin: 6px 0; }
+  .small { font-size: 14px; color: var(--muted); }
+  code { font-family: var(--mono); font-size: .9em; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 760px) { .g2, .g3 { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .card p, .card li { font-size: 16px; margin: 4px 0; }
+  .card.ok { background: var(--ok-soft); border-color: transparent; }
+  .card.warn { background: var(--warn-soft); border-color: transparent; }
+  .card.no { background: var(--no-soft); border-color: transparent; }
+  .card.accent { background: var(--accent-soft); border-color: transparent; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); margin-right: 6px; }
+
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0 14px; }
+  .flow .step { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 16px; }
+  .flow .step b { color: var(--accent); }
+  .flow .arrow { color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .table-wrap { overflow-x: auto; }
+
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--bg); border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .bar button { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; min-width: 44px; min-height: 36px; }
+  .bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .bar .title { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .progress { position: fixed; left: 0; top: 0; height: 3px; background: var(--accent); transition: width .2s ease; }
+
+  @media print {
+    .bar, .progress { display: none; }
+    .slide { display: flex !important; min-height: 0; height: 100vh; page-break-after: always; break-after: page; padding: 40px 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .progress { transition: none; } }
+</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<main id="deck">
+
+<section class="slide" aria-label="Title">
+  <div class="inner">
+    <p class="kicker">my-tech-team · design · 12 Oct 2026</p>
+    <h1>An AI tech team.<br>You are the project manager.</h1>
+    <p class="lead">Six role skills that plan, build, test, review, check and launch your work. They follow one process on any project and with any AI coding tool.</p>
+    <p class="small">github.com/Thamzy265/my-tech-team · Use the arrow keys to move between slides · Print to save as PDF</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Why">
+  <div class="inner">
+    <p class="kicker">Why</p>
+    <h2>One process, reused on every project</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Today</h3><ul><li>The team roles live inside one project (project-deck)</li><li>Their rules are specific to FlutterDeck</li><li>They cannot be reused or installed elsewhere</li></ul></div>
+      <div class="card accent"><h3>After</h3><ul><li>One public plugin: <code>my-tech-team</code></li><li>Project rules stay in each project's CLAUDE.md or AGENTS.md</li><li>Works with Claude Code, Codex, Gemini CLI, Copilot and Cursor</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="The team">
+  <div class="inner">
+    <p class="kicker">The team</p>
+    <h2>Six roles, plus you</h2>
+    <div class="grid g3">
+      <div class="card accent"><h3>You: project manager</h3><p>Decide, approve merges and releases, and publish. You are not a skill.</p></div>
+      <div class="card"><h3>Lead</h3><p>Plans, designs large items, writes the UI spec and the privacy screen, runs the gates, reports to you, merges.</p></div>
+      <div class="card"><h3>Developer</h3><p>Builds to the brief, test-first. Can push back on an unclear spec.</p></div>
+      <div class="card"><h3>Tester</h3><p>Tries to break it. Adds regression, UI-state and abuse-case tests.</p></div>
+      <div class="card"><h3>Reviewer</h3><p>Reviews code, design, security and privacy. Never the author.</p></div>
+      <div class="card"><h3>QA</h3><p>Checks the real product: acceptance, accessibility, privacy, marketing claims.</p></div>
+      <div class="card"><h3>Marketer</h3><p>Research, launch comms and content. Never publishes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="One item">
+  <div class="inner">
+    <p class="kicker">How one item flows</p>
+    <h2>Every item passes every gate</h2>
+    <div class="flow">
+      <span class="step"><b>Lead</b> sizes it, then designs it if large</span><span class="arrow">→</span>
+      <span class="step"><b>You</b> approve the slides (large items)</span><span class="arrow">→</span>
+      <span class="step"><b>Developer</b> builds</span><span class="arrow">→</span>
+      <span class="step"><b>Tester</b> breaks it</span><span class="arrow">→</span>
+      <span class="step"><b>Reviewer</b> approves (loop)</span><span class="arrow">→</span>
+      <span class="step"><b>QA</b> checks it for real</span><span class="arrow">→</span>
+      <span class="step"><b>You</b> approve the merge</span>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h3>Small item</h3><p>One module. No new data store, integration, trust boundary or personal data. No design note or slides.</p></div>
+      <div class="card"><h3>Large item</h3><p>Everything else. It gets a design note, a UI spec if there is UI, a privacy screen and a slide deck for you.</p></div>
+    </div>
+    <p class="small">If a gate does not apply, the log says "n/a — reason". It is never skipped silently.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Lifecycle">
+  <div class="inner">
+    <p class="kicker">Lifecycle</p>
+    <h2>Iterative: every milestone goes through all six stages</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Stage</th><th>Who</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td>Plan</td><td>Lead, you</td><td>Milestone items, acceptance criteria, open decisions</td></tr>
+        <tr><td>Design</td><td>Lead</td><td>Sizing, design note, UI spec, privacy screen, slides</td></tr>
+        <tr><td>Build</td><td>Developer</td><td>Test-first, to the brief</td></tr>
+        <tr><td>Test</td><td>Tester, reviewer, QA</td><td>Break it, review it, check it for real</td></tr>
+        <tr><td>Release</td><td>Lead, you</td><td>Feature security review, release notes, tag, rollback plan, your approval</td></tr>
+        <tr><td>Maintain</td><td>Lead</td><td>Bugs, dependency updates, Later-list triggers, lessons for the next plan</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="slide" aria-label="MVP first">
+  <div class="inner">
+    <p class="kicker">MVP first</p>
+    <h2>Build the essentials now. Note the rest with a trigger.</h2>
+    <div class="grid g2">
+      <div class="card warn"><h3>Can wait until after the MVP</h3><ul><li>Caching, replication, sharding, queues for scale</li><li>Microservices (stay a modular monolith)</li><li>Formal SLOs and dashboards</li><li>Tuning beyond the basic budget</li><li>Nice-to-have features</li></ul></div>
+      <div class="card ok"><h3>Never deferred</h3><ul><li>Security basics and authorisation checks</li><li>Privacy: minimal data, delete, export, consent</li><li>Data integrity, reversible migrations, backups</li><li>Timeouts and safe retries</li><li>Tests, review, QA, basic accessibility</li></ul></div>
+    </div>
+    <p class="small">Later list in <code>docs/PLAN.md</code>, for example: "Caching for /search, trigger: p95 &gt; 500 ms or &gt; 1,000 daily users." You change the phase (MVP → Growth → Scale), and the lead then reviews the list with you.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="System design">
+  <div class="inner">
+    <p class="kicker">System design</p>
+    <h2>How systems and data are built and run</h2>
+    <div class="grid g2">
+      <div class="card"><h3>The lead's 12 steps (large items)</h3><ul><li>Requirements, scope, non-goals</li><li>Top 3 qualities, and a load estimate</li><li>Domain and data model, consistency, migrations</li><li>Two options and their trade-offs</li><li>Failure planning, observability, rollout and rollback</li><li>Trust boundaries, then an ADR if hard to reverse</li></ul></div>
+      <div class="card"><h3>Guard rails</h3><ul><li>Modular monolith first</li><li>Design for about 10× load, not 1000×</li><li>Timeouts and bounded retries everywhere</li><li>Database changes: expand → migrate → contract</li><li>The developer gets a short data/API checklist; the reviewer checks for drift</li></ul></div>
+    </div>
+    <p class="small">Sources: DDIA 2nd ed. (2026), Fundamentals of Software Architecture 2nd ed., Google SRE, Release It!, A Philosophy of Software Design, Building Evolutionary Architectures.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="UI/UX">
+  <div class="inner">
+    <p class="kicker">UI / UX</p>
+    <h2>Spec before code, checked after</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Lead writes the UI spec</h3><ul><li>User, task, flow</li><li>Every state: loading, empty, error, long text, offline</li><li>Breakpoints down to 320 px</li><li>Accessibility notes (WCAG 2.2 AA)</li></ul></div>
+      <div class="card"><h3>Developer builds to it</h3><ul><li>Semantic structure first</li><li>Design tokens, no hard-coded values</li><li>No unsafe HTML, no secrets in the app</li></ul></div>
+      <div class="card"><h3>Tester, reviewer, QA check it</h3><ul><li>Every state and keyboard-only use</li><li>Automated accessibility scan</li><li>Real app: zoom, contrast, screen reader</li></ul></div>
+    </div>
+    <p class="small">Sources: Nielsen Norman Group heuristics, Krug, Refactoring UI, Atomic Design, WCAG 2.2, W3C design tokens.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Security">
+  <div class="inner">
+    <p class="kicker">Security</p>
+    <h2>Reviewed twice: per branch and per feature</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Every branch</h3><ul><li>Checklist from the OWASP Top 10:2025 and CWE Top 25</li><li>Authorisation, injection, SSRF, secrets, dependencies</li><li>LLM risks if the product uses AI</li></ul></div>
+      <div class="card"><h3>Every finished feature</h3><ul><li>The combined result on main</li><li>Catches gaps between the API and the UI</li><li>The feature is not "done" until this passes</li></ul></div>
+    </div>
+    <div class="card no" style="margin-top:14px"><h3>Blocks the merge</h3><p>A Critical or High finding · a leaked secret · missing authorisation on a new endpoint · a reachable Critical or KEV-listed dependency. Only you can accept a known risk.</p></div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Privacy">
+  <div class="inner">
+    <p class="kicker">Data privacy · UK + EU</p>
+    <h2>Each role checks its part</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Role</th><th>Checks</th></tr></thead>
+      <tbody>
+        <tr><td>Lead</td><td>Data fields, purpose, lawful basis, retention, DPIA screening, children, vendors</td></tr>
+        <tr><td>Reviewer</td><td>No personal data in logs or URLs; encryption; deletion jobs; SDKs only after consent</td></tr>
+        <tr><td>QA</td><td>Nothing tracks before consent; Reject is as easy as Accept; export and delete work</td></tr>
+        <tr><td>Marketer</td><td>Recorded consent, opt-out in every message, privacy claims backed by evidence</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Always comes to you: breaches (72-hour clock), DPIAs, sensitive or children's data, lawful basis, new processors or transfers, regulators. UK GDPR as amended by DUAA 2025, PECR, EU GDPR, ePrivacy. Not legal advice.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="What you see">
+  <div class="inner">
+    <p class="kicker">What you see</p>
+    <h2>Short updates, real checks, slides for big things</h2>
+    <div class="grid g3">
+      <div class="card"><h3>PM update</h3><p>Status · done · how you can check it · in progress · next · blockers for all six roles · needs you · risks · design, security, privacy, Later list, marketing.</p></div>
+      <div class="card"><h3>How you can check it</h3><p>Numbered steps with one command per copy block, the expected result after each step and a clean-up step. QA runs them first.</p></div>
+      <div class="card accent"><h3>Slides</h3><p>Every large item and milestone plan comes as a deck like this one, before work starts. You approve it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Repo and install">
+  <div class="inner">
+    <p class="kicker">Repo and install</p>
+    <h2>One repo, two ways to install</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Claude Code</h3><p><code>/plugin marketplace add Thamzy265/my-tech-team</code><br><code>/plugin install my-tech-team@my-tech-team</code></p><p class="small">Skills are called as <code>/my-tech-team:team-lead</code> and so on.</p></div>
+      <div class="card"><h3>Codex, Gemini, Copilot, Cursor</h3><p>Copy <code>skills/team-*</code> into <code>.agents/skills/</code>.</p><p class="small">Frontmatter uses open Agent Skills spec fields only.</p></div>
+    </div>
+    <p class="small" style="margin-top:14px"><code>skills/team-*/SKILL.md</code> + <code>references/</code> · <code>.claude-plugin/</code> manifests · <code>docs/research/</code> sources · <code>docs/slides/</code> decks · README in ASD-STE100 · MIT</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Build plan">
+  <div class="inner">
+    <p class="kicker">Build plan</p>
+    <h2>How it gets built</h2>
+    <div class="flow">
+      <span class="step"><b>1</b> Scaffold and validation in CI</span><span class="arrow">→</span>
+      <span class="step"><b>2</b> Six skills, each tested on a fresh agent first</span><span class="arrow">→</span>
+      <span class="step"><b>3</b> Dry run on a sample repo</span><span class="arrow">→</span>
+      <span class="step"><b>4</b> README, CHANGELOG, v0.1.0</span><span class="arrow">→</span>
+      <span class="step"><b>5</b> Install in project-deck</span>
+    </div>
+    <div class="card warn"><h3>Needs you</h3><ul><li>Approve this design and the plan</li><li>Approve the v0.1.0 release tag and the project-deck switch-over</li><li>Assumed yes unless you say otherwise: the <code>team-</code> prefix, QA checking marketing claims, the default file locations</li></ul></div>
+  </div>
+</section>
+
+</main>
+
+<nav class="bar" aria-label="Slide controls">
+  <span class="title" id="title">my-tech-team</span>
+  <span id="count" aria-live="polite"></span>
+  <button type="button" id="prev" aria-label="Previous slide">←</button>
+  <button type="button" id="next" aria-label="Next slide">→</button>
+  <button type="button" id="theme" aria-label="Switch light or dark theme">◐</button>
+</nav>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  function fromHash() {
+    var n = parseInt(location.hash.slice(1), 10);
+    return isNaN(n) ? 0 : Math.min(Math.max(n - 1, 0), slides.length - 1);
+  }
+  function show(n) {
+    i = Math.min(Math.max(n, 0), slides.length - 1);
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === i); });
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((i + 1) / slides.length * 100) + '%';
+    document.getElementById('title').textContent = slides[i].getAttribute('aria-label') || document.title;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input, textarea')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) >= 0) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].indexOf(e.key) >= 0) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('prev').addEventListener('click', function () { show(i - 1); });
+  document.getElementById('next').addEventListener('click', function () { show(i + 1); });
+  document.getElementById('theme').addEventListener('click', function () {
+    var root = document.documentElement;
+    var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+  });
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+  show(fromHash());
+})();
+</script>
+</body>
+</html>
