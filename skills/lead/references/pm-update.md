@@ -6,7 +6,7 @@ Use this for **every** status update, progress report or "where are we?" answer.
 
 ## Rules
 
-Plain language. No code except the copy-paste commands in "How you can check it". Keep the rest under about 300 words; put evidence in brackets, not sentences.
+Plain language. No code except the copy-paste commands in "How you can check it". "How you can check it" does not count towards the word limit: copy QA's steps in full. Keep everything else under about 300 words in total: at most three bullets per section, one line each, with evidence in brackets, not sentences. Put the detail (findings, security notes, evidence) in the status log or `docs/qa/` and link to it.
 
 Health: **on track** means nothing is blocked and no open findings are older than one work loop. **At risk** means open findings or a dependency is late, but there's a plan. **Blocked** means waiting on the PM or something outside the team. "Needs you" lists only what is needed now; later needs go under "Next up".
 
