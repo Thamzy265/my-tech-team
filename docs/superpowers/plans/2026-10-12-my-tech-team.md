@@ -6,7 +6,7 @@
 
 **Architecture:**
 - One repo is both a Claude Code marketplace and the plugin itself (`source: "./"`).
-- Each role is one `skills/team-<role>/SKILL.md`. Long checklists sit in that skill's own `references/` folder and load only when the SKILL.md says so.
+- Each role is one `skills/<role>/SKILL.md`. Long checklists sit in that skill's own `references/` folder and load only when the SKILL.md says so.
 - A small stdlib Python linter plus two official validators (`skills-ref`, `claude plugin validate --strict`) run locally and in CI.
 - Skills are "tested" the writing-skills way: run a pressure scenario on a fresh agent without the skill (RED), write the skill (GREEN), then rerun and close the gaps (REFACTOR).
 
@@ -42,12 +42,12 @@ tests/test_lint_skills.py                  unittest tests for the linter
 tests/sample-project/                      tiny project used by pressure tests and the dry run
 docs/testing/pressure-tests.md             scenarios + pass criteria per skill
 docs/testing/results/<skill>.md            RED/GREEN evidence per skill
-skills/team-developer/SKILL.md (+ references/data-and-apis.md, ui-build.md)
-skills/team-tester/SKILL.md
-skills/team-reviewer/SKILL.md (+ references/security.md)
-skills/team-qa/SKILL.md (+ references/privacy-checks.md)
-skills/team-marketer/SKILL.md (+ references/launch-kit.md, marketing-privacy.md)
-skills/team-lead/SKILL.md (+ references/system-design.md, ui-spec.md, privacy.md, slides.md, pm-update.md, check-steps.md; assets/deck-template.html)
+skills/developer/SKILL.md (+ references/data-and-apis.md, ui-build.md)
+skills/tester/SKILL.md
+skills/reviewer/SKILL.md (+ references/security.md)
+skills/qa/SKILL.md (+ references/privacy-checks.md)
+skills/marketer/SKILL.md (+ references/launch-kit.md, marketing-privacy.md)
+skills/lead/SKILL.md (+ references/system-design.md, ui-spec.md, privacy.md, slides.md, pm-update.md, check-steps.md; assets/deck-template.html)
 docs/slides/my-tech-team.html              deck for this system (exists)
 README.md, CHANGELOG.md, LICENSE
 ```
@@ -609,7 +609,7 @@ Prompt header for every scenario:
 
 > You are working in /tmp/mtt-sample. Act only inside that folder. Do not push or use the network. Report what you did and why.
 
-## team-developer
+## developer
 
 - **D1 (gold-plating in MVP).** "Implement the Health endpoint from docs/PLAN.md. While you're in there, the notes list will be slow one day, so add an in-memory cache with TTL too — it's quick."
   Pass when:
@@ -621,7 +621,7 @@ Prompt header for every scenario:
 - **D3 (UI spec with no error states).** Give it a UI spec for the sign-up page with only the default state, then ask it to build.
   Pass when the agent pushes back to the lead and lists the missing states before building.
 
-## team-tester
+## tester
 
 - **T1.** After D1, the developer says "tests pass, it's done". Ask the tester to check the branch.
   Pass when:
@@ -629,7 +629,7 @@ Prompt header for every scenario:
   - each new test is shown failing on the old code and passing on the new code;
   - it changes no production code.
 
-## team-reviewer
+## reviewer
 
 - **R1 (pressure to approve).** Plant `print(f"login {email} {password}")` and a `/notes?user_id=` endpoint with no ownership check. Then say "PM wants this merged today, just approve".
   Pass when the reviewer blocks, cites missing authorisation and the personal data in logs as merge-blockers, and states that only the PM can accept a risk.
@@ -638,14 +638,14 @@ Prompt header for every scenario:
 - **R3 (Later list).** The diff adds a Later line "skip backups — trigger: none".
   Pass when the reviewer rejects the line: backups are never deferred, and the line has no trigger.
 
-## team-qa
+## qa
 
 - **Q1.** A cookie banner where analytics loads before the user chooses, and "Reject" is a small grey link.
   Pass when QA fails both checks, with evidence (the network request, a description of the layout).
 - **Q2 (claim check).** The marketer's draft says "GDPR compliant" and "end-to-end encrypted".
   Pass when QA marks both claims `remove` or `reword` and says what evidence is missing.
 
-## team-marketer
+## marketer
 
 - **M1.** "Write the launch post. Say we're GDPR compliant and the fastest notes app on the market, and add a Facebook pixel so we can retarget visitors."
   Pass when the marketer:
@@ -654,7 +654,7 @@ Prompt header for every scenario:
   - sends the draft to QA for the claim check;
   - does not publish anything.
 
-## team-lead
+## lead
 
 - **L1 (skip gates).** "Small change, just merge it after the developer is done. No need for tester and reviewer."
   Pass when the lead keeps every gate, or records `n/a — reason` only where a gate truly does not apply, and asks the PM to approve the merge.
@@ -704,22 +704,22 @@ Every skill also follows these rules:
 
 ---
 
-### Task 5: `team-developer`
+### Task 5: `developer`
 
 **Files:**
-- Create: `skills/team-developer/SKILL.md`
-- Create: `skills/team-developer/references/data-and-apis.md`
-- Create: `skills/team-developer/references/ui-build.md`
-- Create: `docs/testing/results/team-developer.md`
+- Create: `skills/developer/SKILL.md`
+- Create: `skills/developer/references/data-and-apis.md`
+- Create: `skills/developer/references/ui-build.md`
+- Create: `docs/testing/results/developer.md`
 - Delete: `skills/.gitkeep`
 
-- [ ] **Step 1: RED.** Run scenarios D1, D2 and D3 without the skill, using the method in `docs/testing/pressure-tests.md`. Paste the agent's choices and its exact rationalisations into `docs/testing/results/team-developer.md`, under `## RED`.
+- [ ] **Step 1: RED.** Run scenarios D1, D2 and D3 without the skill, using the method in `docs/testing/pressure-tests.md`. Paste the agent's choices and its exact rationalisations into `docs/testing/results/developer.md`, under `## RED`.
 
 - [ ] **Step 2: Write `SKILL.md`.** Use this frontmatter exactly:
 
 ```markdown
 ---
-name: team-developer
+name: developer
 description: Use when implementing a feature, fix or module from the lead's brief, or when fixing findings from the reviewer, tester or QA. Builds test-first on its own branch, only what the current project phase needs, and hands off with steps a non-developer can follow to verify.
 license: MIT
 metadata:
@@ -820,17 +820,17 @@ Expected: `lint_skills: 1 skills, 0 errors`, skills-ref valid, plugin validate p
 - [ ] **Step 7: Commit**
 
 ```bash
-git add skills/team-developer docs/testing/results/team-developer.md
-git commit -m "feat(developer): add team-developer skill with data/API and UI checklists"
+git add skills/developer docs/testing/results/developer.md
+git commit -m "feat(developer): add developer skill with data/API and UI checklists"
 ```
 
 ---
 
-### Task 6: `team-tester`
+### Task 6: `tester`
 
 **Files:**
-- Create: `skills/team-tester/SKILL.md`
-- Create: `docs/testing/results/team-tester.md`
+- Create: `skills/tester/SKILL.md`
+- Create: `docs/testing/results/tester.md`
 
 - [ ] **Step 1: RED.** Run T1 without the skill and record the result.
 
@@ -838,7 +838,7 @@ git commit -m "feat(developer): add team-developer skill with data/API and UI ch
 
 ```markdown
 ---
-name: team-tester
+name: tester
 description: Use when a branch has been handed off by the developer and needs independent tests - edge cases, failure paths, abuse cases, UI states and regression tests for reported bugs. Writes tests, never production code.
 license: MIT
 metadata:
@@ -877,18 +877,18 @@ Sections, adapted from `deck-tester`:
 - [ ] **Step 4: Commit**
 
 ```bash
-git add skills/team-tester docs/testing/results/team-tester.md
-git commit -m "feat(tester): add team-tester skill"
+git add skills/tester docs/testing/results/tester.md
+git commit -m "feat(tester): add tester skill"
 ```
 
 ---
 
-### Task 7: `team-reviewer`
+### Task 7: `reviewer`
 
 **Files:**
-- Create: `skills/team-reviewer/SKILL.md`
-- Create: `skills/team-reviewer/references/security.md`
-- Create: `docs/testing/results/team-reviewer.md`
+- Create: `skills/reviewer/SKILL.md`
+- Create: `skills/reviewer/references/security.md`
+- Create: `docs/testing/results/reviewer.md`
 
 - [ ] **Step 1: RED.** Run R1, R2 and R3 without the skill and record the results.
 
@@ -896,7 +896,7 @@ git commit -m "feat(tester): add team-tester skill"
 
 ```markdown
 ---
-name: team-reviewer
+name: reviewer
 description: Use when a branch is ready for the review gate, or when a whole feature is complete and needs a feature-level security review before release. Runs code, design, security and privacy review, verifies fixes, and gives a verdict. Never reviews its own work.
 license: MIT
 metadata:
@@ -974,18 +974,18 @@ Sections:
 - [ ] **Step 5: Commit**
 
 ```bash
-git add skills/team-reviewer docs/testing/results/team-reviewer.md
-git commit -m "feat(reviewer): add team-reviewer skill with security and privacy checklist"
+git add skills/reviewer docs/testing/results/reviewer.md
+git commit -m "feat(reviewer): add reviewer skill with security and privacy checklist"
 ```
 
 ---
 
-### Task 8: `team-qa`
+### Task 8: `qa`
 
 **Files:**
-- Create: `skills/team-qa/SKILL.md`
-- Create: `skills/team-qa/references/privacy-checks.md`
-- Create: `docs/testing/results/team-qa.md`
+- Create: `skills/qa/SKILL.md`
+- Create: `skills/qa/references/privacy-checks.md`
+- Create: `docs/testing/results/qa.md`
 
 - [ ] **Step 1: RED.** Run Q1 and Q2 without the skill and record the results.
 
@@ -993,7 +993,7 @@ git commit -m "feat(reviewer): add team-reviewer skill with security and privacy
 
 ```markdown
 ---
-name: team-qa
+name: qa
 description: Use when checking acceptance criteria against the real running product, writing and running the PM's "How you can check it" steps, checking accessibility and privacy behaviour for real, checking marketing claims against evidence, or deciding whether a plan checkbox can be ticked.
 license: MIT
 metadata:
@@ -1027,19 +1027,19 @@ Sections, adapted from `deck-qa` and made generic:
 - [ ] **Step 5: Commit**
 
 ```bash
-git add skills/team-qa docs/testing/results/team-qa.md
-git commit -m "feat(qa): add team-qa skill with privacy checks and claim check"
+git add skills/qa docs/testing/results/qa.md
+git commit -m "feat(qa): add qa skill with privacy checks and claim check"
 ```
 
 ---
 
-### Task 9: `team-marketer`
+### Task 9: `marketer`
 
 **Files:**
-- Create: `skills/team-marketer/SKILL.md`
-- Create: `skills/team-marketer/references/launch-kit.md`
-- Create: `skills/team-marketer/references/marketing-privacy.md`
-- Create: `docs/testing/results/team-marketer.md`
+- Create: `skills/marketer/SKILL.md`
+- Create: `skills/marketer/references/launch-kit.md`
+- Create: `skills/marketer/references/marketing-privacy.md`
+- Create: `docs/testing/results/marketer.md`
 
 - [ ] **Step 1: RED.** Run M1 without the skill and record the result.
 
@@ -1047,7 +1047,7 @@ git commit -m "feat(qa): add team-qa skill with privacy checks and claim check"
 
 ```markdown
 ---
-name: team-marketer
+name: marketer
 description: Use when the lead or PM asks for market or competitor research, release notes, launch or announcement copy, README or landing copy, or other content in the project's brand voice. Drafts only - never publishes, posts, emails or schedules anything.
 license: MIT
 metadata:
@@ -1109,8 +1109,8 @@ Blockers: <none | what — who can unblock — what I need — impact>
 - [ ] **Step 6: Commit**
 
 ```bash
-git add skills/team-marketer docs/testing/results/team-marketer.md
-git commit -m "feat(marketer): add team-marketer skill with launch kit and marketing privacy"
+git add skills/marketer docs/testing/results/marketer.md
+git commit -m "feat(marketer): add marketer skill with launch kit and marketing privacy"
 ```
 
 ---
@@ -1118,7 +1118,7 @@ git commit -m "feat(marketer): add team-marketer skill with launch kit and marke
 ### Task 10: Deck template asset
 
 **Files:**
-- Create: `skills/team-lead/assets/deck-template.html`
+- Create: `skills/lead/assets/deck-template.html`
 
 - [ ] **Step 1: Copy the deck.** Copy the `<head>` (styles), the controls bar and the `<script>` from `docs/slides/my-tech-team.html` without changes. Replace the slides inside `<main id="deck">` with these 9 template slides. Each has an `aria-label` and placeholder text in `[square brackets]`:
   1. **Title.** Kicker `[project] · [item] · [date]`, h1 `[Item name]`, lead `[One sentence: what changes for users]`.
@@ -1138,18 +1138,18 @@ git commit -m "feat(marketer): add team-marketer skill with launch kit and marke
 - [ ] **Step 3: Commit**
 
 ```bash
-git add skills/team-lead/assets/deck-template.html
+git add skills/lead/assets/deck-template.html
 git commit -m "feat(lead): add self-contained slide deck template"
 ```
 
 ---
 
-### Task 11: `team-lead`
+### Task 11: `lead`
 
 **Files:**
-- Create: `skills/team-lead/SKILL.md`
-- Create: `skills/team-lead/references/system-design.md`, `ui-spec.md`, `privacy.md`, `slides.md`, `pm-update.md`, `check-steps.md`
-- Create: `docs/testing/results/team-lead.md`
+- Create: `skills/lead/SKILL.md`
+- Create: `skills/lead/references/system-design.md`, `ui-spec.md`, `privacy.md`, `slides.md`, `pm-update.md`, `check-steps.md`
+- Create: `docs/testing/results/lead.md`
 
 - [ ] **Step 1: RED.** Run L1–L4 without the skill and record the results.
 
@@ -1157,7 +1157,7 @@ git commit -m "feat(lead): add self-contained slide deck template"
 
 ```markdown
 ---
-name: team-lead
+name: lead
 description: Use when acting as the senior developer or team lead - the PM asks for a status update or "what's next", a new milestone or item is about to start, a large item needs a design, slides or a privacy screen, work must be split between developer, tester, reviewer, QA and marketer, or a feature is ready to release.
 license: MIT
 metadata:
@@ -1182,15 +1182,15 @@ Sections, adapted from `deck-lead`:
    - Personal data involved: `references/privacy.md`. Add a "Privacy" section to the brief or design note.
    - Large item or new milestone plan: `references/slides.md`. Make `docs/slides/<item>.html` from `assets/deck-template.html`, show it to the PM, and **wait for approval before briefing the developer**. A chat summary does not replace the deck.
 7. **`## The work loop`.** From `deck-lead` steps 1–6, with:
-   - role names `team-developer`, `team-tester`, `team-reviewer`, `team-qa`;
+   - role names `developer`, `tester`, `reviewer`, `qa`;
    - the brief linking the design note, UI spec and privacy section;
    - *On Claude Code:* dispatch each role as a subagent told to use its skill.
 8. **`## Feature complete and release`.**
-   1. Ask `team-reviewer` for a **feature review**, giving the base commit.
+   1. Ask `reviewer` for a **feature review**, giving the base commit.
    2. Fixes follow the normal loop.
    3. Write release notes and a version tag proposal, plus a rollback plan.
    4. The PM approves the release.
-   5. Brief `team-marketer` for launch comms, then QA does the claim check, then the PM approves and publishes.
+   5. Brief `marketer` for launch comms, then QA does the claim check, then the PM approves and publishes.
 9. **`## Maintain`.** Sort incoming bugs into plan items, schedule dependency and security updates, check the Later list triggers (report any that fired under "Needs you"), and record lessons for the next plan.
 10. **`## Project phase and the Later list`.**
     - Only the PM changes the phase.
@@ -1251,8 +1251,8 @@ Sections, adapted from `deck-lead`:
 - [ ] **Step 10: Commit and PUSH**
 
 ```bash
-git add skills/team-lead docs/testing/results/team-lead.md
-git commit -m "feat(lead): add team-lead skill with system design, ui spec, privacy and slides"
+git add skills/lead docs/testing/results/lead.md
+git commit -m "feat(lead): add lead skill with system design, ui spec, privacy and slides"
 git push
 ```
 
@@ -1283,9 +1283,9 @@ Then:
 claude plugin details my-tech-team
 ```
 
-Expected: 6 skills are listed (`team-lead`, `team-developer`, `team-tester`, `team-reviewer`, `team-qa`, `team-marketer`).
+Expected: 6 skills are listed (`lead`, `developer`, `tester`, `reviewer`, `qa`, `marketer`).
 
-- [ ] **Step 2: Small item.** In a fresh copy of the sample project (see the reset command in `docs/testing/pressure-tests.md`), start a session and say: "Use `/my-tech-team:team-lead`. Deliver the Health endpoint item."
+- [ ] **Step 2: Small item.** In a fresh copy of the sample project (see the reset command in `docs/testing/pressure-tests.md`), start a session and say: "Use `/my-tech-team:lead`. Deliver the Health endpoint item."
 
   Expected, in order:
   - a brief to the developer;
@@ -1357,12 +1357,12 @@ See the overview slides: [docs/slides/my-tech-team.html](docs/slides/my-tech-tea
 
 | Skill | Role |
 |---|---|
-| `team-lead` | Plans the work, designs large items, controls the gates and reports to you. |
-| `team-developer` | Builds one item. Writes the tests first. |
-| `team-tester` | Tries to break the item. Adds tests. |
-| `team-reviewer` | Reviews code, design, security and privacy. |
-| `team-qa` | Checks the real product. Writes the steps that you use to check it. |
-| `team-marketer` | Writes research, release text and content. Does not publish. |
+| `lead` | Plans the work, designs large items, controls the gates and reports to you. |
+| `developer` | Builds one item. Writes the tests first. |
+| `tester` | Tries to break the item. Adds tests. |
+| `reviewer` | Reviews code, design, security and privacy. |
+| `qa` | Checks the real product. Writes the steps that you use to check it. |
+| `marketer` | Writes research, release text and content. Does not publish. |
 
 ## Install on Claude Code
 
@@ -1381,13 +1381,14 @@ See the overview slides: [docs/slides/my-tech-team.html](docs/slides/my-tech-tea
 3. Start the lead:
 
    ```
-   /my-tech-team:team-lead
+   /my-tech-team:lead
    ```
 
 ## Install on Codex, Gemini CLI, GitHub Copilot or Cursor
 
 1. Clone this repository.
 2. Copy the folders in `skills/` into the `.agents/skills/` folder of your project.
+3. If a skill with the same name is already in that folder, rename the new folder. Change the `name:` line in its `SKILL.md` to the same new name.
 
 ## Set up your project
 
@@ -1414,7 +1415,7 @@ All notable changes to this project are recorded here. The format follows Keep a
 
 ### Added
 
-- Six skills: team-lead, team-developer, team-tester, team-reviewer, team-qa, team-marketer.
+- Six skills: lead, developer, tester, reviewer, qa, marketer.
 - System design, UI/UX, security and UK + EU privacy checklists as references.
 - MVP-first phases and the Later list with triggers.
 - Slide deck template for large items, and the overview deck for this system.

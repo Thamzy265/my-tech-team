@@ -34,12 +34,12 @@ The human user is the **project manager (PM)** and is not a skill.
 
 | Skill | Owns |
 |---|---|
-| `team-lead` | Plan; sizing; **system design note**; **UI spec**; **privacy screen**; briefs; gates; status log; PM updates; merge |
-| `team-developer` | Builds one scoped item test-first, to the lead's brief; challenges unclear specs; hand-off note and "How to verify" draft |
-| `team-tester` | Tries to break the work; regression tests; UI state and accessibility probes; abuse cases |
-| `team-reviewer` | Code review, design-quality review, **security review** (per branch and per feature), **privacy-in-code review** |
-| `team-qa` | Real-flow acceptance; PM check steps; manual accessibility pass; **privacy checks in the real product**; marketing claim check |
-| `team-marketer` | Research, launch and release comms, content in the brand voice, **marketing privacy rules** |
+| `lead` | Plan; sizing; **system design note**; **UI spec**; **privacy screen**; briefs; gates; status log; PM updates; merge |
+| `developer` | Builds one scoped item test-first, to the lead's brief; challenges unclear specs; hand-off note and "How to verify" draft |
+| `tester` | Tries to break the work; regression tests; UI state and accessibility probes; abuse cases |
+| `reviewer` | Code review, design-quality review, **security review** (per branch and per feature), **privacy-in-code review** |
+| `qa` | Real-flow acceptance; PM check steps; manual accessibility pass; **privacy checks in the real product**; marketing claim check |
+| `marketer` | Research, launch and release comms, content in the brand voice, **marketing privacy rules** |
 
 ## Lifecycle and project phases
 
@@ -130,7 +130,7 @@ reviewer: feature-level security review of the combined result on main
 
 For every **large** item, and every new milestone plan, the lead makes a slide deck **before** briefing the developer. The PM must approve it before work starts.
 
-- **File:** `docs/slides/<item>.html`, copied from `skills/team-lead/assets/deck-template.html`.
+- **File:** `docs/slides/<item>.html`, copied from `skills/lead/assets/deck-template.html`.
   - The template is one self-contained HTML file: no external scripts, fonts or trackers.
   - It supports arrow-key navigation, light and dark themes, and print to PDF.
 - **Slides, in this order:**
@@ -274,14 +274,14 @@ Each project adds a short **Team setup** section to CLAUDE.md or AGENTS.md. Skil
 ```
 .claude-plugin/marketplace.json   marketplace "my-tech-team", one plugin, source "./"
 .claude-plugin/plugin.json        name, version, description, author, repository, license MIT
-skills/team-lead/                 SKILL.md + references/system-design.md, ui-spec.md, privacy.md, pm-update.md, check-steps.md, slides.md
+skills/lead/                 SKILL.md + references/system-design.md, ui-spec.md, privacy.md, pm-update.md, check-steps.md, slides.md
                                   + assets/deck-template.html
 docs/slides/my-tech-team.html     the deck that explains this system
-skills/team-developer/            SKILL.md + references/data-and-apis.md, ui-build.md
-skills/team-tester/               SKILL.md
-skills/team-reviewer/             SKILL.md + references/security.md (includes privacy in code)
-skills/team-qa/                   SKILL.md + references/privacy-checks.md
-skills/team-marketer/             SKILL.md + references/launch-kit.md, marketing-privacy.md
+skills/developer/            SKILL.md + references/data-and-apis.md, ui-build.md
+skills/tester/               SKILL.md
+skills/reviewer/             SKILL.md + references/security.md (includes privacy in code)
+skills/qa/                   SKILL.md + references/privacy-checks.md
+skills/marketer/             SKILL.md + references/launch-kit.md, marketing-privacy.md
 docs/research/                    research notes (sources for the skills)
 README.md                         ASD-STE100: install for Claude Code; copy into .agents/skills for others
 CHANGELOG.md, LICENSE (MIT)
@@ -315,8 +315,11 @@ CHANGELOG.md, LICENSE (MIT)
 
 ## Open questions for the PM
 
-These are assumed yes unless the PM says otherwise:
+Resolved on 13 Oct 2026:
 
-- **Q1.** Keep the `team-` prefix on skill names?
+- **Skill names have no prefix** (`lead`, `developer`, `tester`, `reviewer`, `qa`, `marketer`). The plugin name already namespaces them in Claude Code (`/my-tech-team:lead`). For copy installs, the README says to rename the folder and the `name:` line if a skill with the same name already exists.
+
+Assumed yes unless the PM says otherwise:
+
 - **Q2.** Should QA do the marketing claim check?
 - **Q3.** Do the Team setup defaults look right?
