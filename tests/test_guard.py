@@ -44,6 +44,22 @@ MUST_ASK = [
     "diskutil eraseDisk APFS X disk4",
     "chmod -R 777 ~/",
     "cd /tmp && git reset --hard",
+    "cd x\nsudo ls",
+    "npm test\ngit reset --hard",
+    "echo hi\nrm -rf ~/x",
+    "ls\npkill node",
+    "sudo\tls",
+    'rm -rf "$HOME"/x',
+    'rm -rf "$HOME"',
+    "rm -rf '/Users/x'",
+    "rm -rf ${HOME}/x",
+    "rm -rf ..",
+    "rm -f -r ~/x",
+    "rm -rf /tmp/x ~/Documents",
+    "rm -rf /var/folders/x /Users/me",
+    "git push origin +main",
+    "git push origin +HEAD:main",
+    'echo x >> "$HOME/.zshrc"',
 ]
 
 MUST_PASS = [
@@ -67,14 +83,19 @@ MUST_PASS = [
     "grep -n 'DROP TABLE' docs/notes.md",
     "python3 -m unittest -v",
     "curl -s http://127.0.0.1:8765/health",
+    "chmod -R 755 ./dist",
+    "chmod -R 755 dist/",
+    "rm -rf /tmp/a /private/tmp/b",
+    'rm -rf "/tmp/x"',
+    "git push origin main:main",
 ]
 
 
-def run_guard(command):
+def run_guard(command, description="test"):
     payload = json.dumps({
         "hook_event_name": "PreToolUse",
         "tool_name": "Bash",
-        "tool_input": {"command": command, "description": "test"},
+        "tool_input": {"command": command, "description": description},
     })
     return subprocess.run(["sh", str(GUARD)], input=payload, capture_output=True, text=True, timeout=10)
 
@@ -97,6 +118,11 @@ class Guard(unittest.TestCase):
                 result = run_guard(cmd)
                 self.assertEqual(result.returncode, 0)
                 self.assertEqual(result.stdout, "")
+
+    def test_description_is_not_read(self):
+        result = run_guard("ls", "Explain sudo and git reset --hard")
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, "")
 
     def test_never_denies(self):
         for cmd in MUST_ASK:

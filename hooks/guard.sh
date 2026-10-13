@@ -3,6 +3,11 @@
 # Asks the PM before risky commands. It never denies and fails open:
 # if anything goes wrong it prints nothing, so normal permissions apply.
 input=$(cat 2>/dev/null) || exit 0
+# Read only the command: drop the description field, then make every line
+# of the command its own command (JSON "\n" becomes ";", "\r" and "\t" spaces).
+input=$(printf '%s' "$input" \
+  | sed -E 's/"description":[[:space:]]*"([^"\\]|\\.)*"//' \
+  | sed 's/\\n/;/g; s/\\[rt]/ /g') || exit 0
 
 has() { printf '%s' "$input" | grep -Eq -- "$1"; }
 hasi() { printf '%s' "$input" | grep -Eiq -- "$1"; }
@@ -10,16 +15,21 @@ hasi() { printf '%s' "$input" | grep -Eiq -- "$1"; }
 W='(^|[^A-Za-z0-9_./-])'   # start of a command word
 reason=""
 
-# Recursive delete of an absolute, home or parent path (temp folders are fine).
-if has "${W}rm[[:space:]]+(-[A-Za-z]*[rR][A-Za-z]*|--recursive)" \
-  && has "${W}rm[[:space:]][^|;&]*[[:space:]](/|~|\\\$HOME|\\.\\./)" \
-  && ! has "${W}rm[[:space:]][^|;&]*[[:space:]](/tmp/|/private/tmp/|/var/folders/)[^[:space:]\"]+"; then
+# Recursive delete of an absolute, home or parent path. Temp paths are
+# removed first, so they never excuse another target in the same command.
+notmp=$input
+if ! has "(/tmp|/var/folders)/[^[:space:]\"]*\\.\\."; then
+  notmp=$(printf '%s' "$input" | sed -E 's#(\\")?(/private)?(/tmp|/var/folders)/[^[:space:]"\\]+##g') || notmp=$input
+fi
+if has "${W}rm[[:space:]]+(-[^[:space:]]+[[:space:]]+)*(-[A-Za-z]*[rR][A-Za-z]*|--recursive)" \
+  && printf '%s' "$notmp" | grep -Eq -- "${W}rm[[:space:]][^|;&]*[[:space:]](\\\\\"|')?(/|~|\\\$\\{?HOME|\\.\\.(/|[[:space:]\\'\"]|\$))"; then
   reason="recursive delete outside the project"
 elif has "${W}git[[:space:]]+reset[[:space:]][^|;&]*--hard"; then
   reason="git reset --hard discards uncommitted work"
 elif has "${W}git[[:space:]]+clean[[:space:]]+-[A-Za-z]*f"; then
   reason="git clean deletes untracked files"
-elif has "${W}git[[:space:]]+push[^|;&]*[[:space:]](-f|--force|--force-with-lease)([^A-Za-z-]|$)"; then
+elif has "${W}git[[:space:]]+push[^|;&]*[[:space:]](-f|--force|--force-with-lease)([^A-Za-z-]|$)" \
+  || has "${W}git[[:space:]]+push[^|;&]*[[:space:]]\\+[^[:space:]\"]"; then
   reason="force-push rewrites remote history"
 elif has "${W}git[[:space:]]+push[^|;&]*[[:space:]](--delete|:[A-Za-z0-9])"; then
   reason="deletes a remote branch or tag"
@@ -43,12 +53,12 @@ elif has "${W}brew[[:space:]]+(install|uninstall|reinstall|upgrade|tap)" \
   || has "playwright[[:space:]]+install" || has "get\\.maestro\\.mobile\\.dev" \
   || has "${W}flutter[[:space:]]+upgrade" || has "${W}sdkmanager[[:space:]]"; then
   reason="installs or upgrades software on this machine"
-elif has ">>?[[:space:]]*(~|\\\$HOME)/\\.(zshrc|bashrc|bash_profile|profile|zprofile|claude/)" \
+elif has ">>?[[:space:]]*(\\\\\")?(~|\\\$\\{?HOME\\}?)/\\.(zshrc|bashrc|bash_profile|profile|zprofile|claude/)" \
   || has "${W}defaults[[:space:]]+write" || has "${W}(chsh|launchctl)[[:space:]]"; then
   reason="changes shell, system or Claude Code settings"
 elif has "${W}(mkfs|shutdown|reboot)([[:space:]]|$)" || has "diskutil[[:space:]]+(erase|partition)" || has "${W}dd[[:space:]]+if="; then
   reason="can damage disks or stop this machine"
-elif has "${W}(chmod|chown)[[:space:]]+-R[[:space:]][^|;&]*(/|~)"; then
+elif has "${W}(chmod|chown)[[:space:]]+-R[[:space:]][^|;&]*[[:space:]](\\\\\"|')?(/|~|\\\$\\{?HOME)"; then
   reason="changes permissions recursively outside the project"
 fi
 
