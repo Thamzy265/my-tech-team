@@ -88,6 +88,8 @@ MUST_ASK = [
 ]
 
 MUST_PASS = [
+    "uv pip install requests",
+    "git restore --staged src/app.py",
     "npm test",
     "pnpm check",
     "git status",
