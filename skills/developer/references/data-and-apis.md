@@ -2,7 +2,7 @@
 
 Checked: 2026-10-12. Check the current source when a rule decides an outcome.
 
-Use this for data stores, APIs, migrations, integrations and background jobs. Work through every item. For an item that doesn't apply, write `n/a — <reason>`.
+Use this for data stores, APIs, migrations, integrations and background jobs. Work through every item. For an item that doesn't apply, write `n/a — <reason>` on the hand-off's "Checklists" line.
 
 1. Write and agree the API contract (OpenAPI or the project's equivalent) **before** code, including the error shape and pagination. If the brief doesn't define them, raise a spec gap with the lead.
 2. Follow the lead's design note. If you must deviate, record it in the hand-off under "Deviations from plan".

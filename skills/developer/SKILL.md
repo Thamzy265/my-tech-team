@@ -31,6 +31,8 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
    - new personal data has no purpose, retention rule, or delete and export behaviour;
    - acceptance criteria are missing or can't be tested.
 3. **If the spec is incomplete, stop before building.** Send the lead a list of exactly what is missing, one line per gap, and wait for the answer. Don't guess, don't fill gaps with your own choices, and don't build "the default state for now". List the gaps under "Spec gaps raised" in the hand-off.
+   - **Not a gap:** checklist items that don't apply to this item (mark them `n/a — <reason>` in the hand-off), or questions an existing project convention or the brief already answers (follow the convention and say which under "Deviations from plan").
+   - **A real gap** is one whose answer changes user-visible behaviour, data handling, or a never-deferred rule.
 4. Check the current docs of any external tool or API you use. Write down how it differs from the plan.
 5. Branch from an up-to-date main: `git switch -c <type>/<topic>` (for example `feat/health-endpoint`). Use the branch the lead named, if any. Never commit to main.
 
@@ -38,7 +40,7 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
 
 - Data stores, APIs, migrations, integrations or background jobs: read `references/data-and-apis.md`.
 - Screens or UI components: read `references/ui-build.md`.
-- Both, if both apply. Work through every item; write `n/a — <reason>` in your notes for items that don't apply.
+- Both, if both apply. Work through every item; write `n/a — <reason>` for items that don't apply, and list them on the hand-off's "Checklists" line.
 
 ## Build only what this phase needs
 
@@ -70,9 +72,10 @@ The trigger must be something a person can measure: `p95 > 500 ms on /search`, `
 - basic accessibility.
 
 **If anyone asks you to defer a never-deferred item** (for example "skip deleting their uploads, we'll do it after MVP"):
-1. Don't decide alone and don't silently comply. Before writing code, send the lead a blocker line: what was asked, which never-deferred rule it breaks, and that you plan to build it in full.
-2. Build it in full. Only the PM can accept a known security or privacy risk, and the decision must be recorded in `docs/status.md`. If the lead returns a recorded PM decision, follow it and quote it in the hand-off.
-3. Never write a Later line for a never-deferred item.
+1. Send the lead a blocker line immediately, before writing code: what was asked, which never-deferred rule it breaks, and that you are building it in full. Don't decide alone and don't silently comply.
+2. Build the never-deferred part in full, together with the rest of the item. Never ship it partial.
+3. If, and only if, the lead returns a PM decision recorded in `docs/status.md` that accepts the risk, follow it. Quote that decision, with its date, in the hand-off under "Deviations from plan", so the deferred work stays tracked. Only the PM can accept a known security or privacy risk.
+4. Even then, never write a Later line for a never-deferred item.
 
 **Don't block the future:** config in env, stateless processes, a clean API and data model.
 
@@ -100,6 +103,7 @@ Branch: <name> (<n> commits)
 Built: <what, in 2-4 bullets>
 Tests: <count> passing; new tests cover <...>; first failing run: <test name and failure line, before the fix>
 Deviations from plan: <none | what and why>
+Checklists: <data-and-apis / ui-build / none> — n/a items: <list or none>
 Risks / unverified: <none | what>
 Personal data touched: <none | fields and why>
 Later lines added: <none | lines>
@@ -128,8 +132,9 @@ Report a blocker to the lead as soon as it appears; don't wait for the hand-off.
 | Adding a cache or "quick" extra | Write a Later line with a trigger |
 | Offering "build it now or add it to the plan?" | Write the Later line yourself and list it in the hand-off |
 | A trigger like "when it gets slow" | Use a measurable condition: a number and a metric |
-| Deferring deletion or an authorisation check | Never deferred. Build it, or raise a blocker |
-| Deciding a never-deferred conflict alone | Tell the lead first, then build it in full |
+| Deferring deletion or an authorisation check | Never deferred. Send the lead a blocker line, then build it in full with the item |
+| Deciding a never-deferred conflict alone | Blocker line to the lead first; skip it only on a PM decision recorded in `docs/status.md`, quoted with its date under "Deviations from plan" |
+| Blocking on a question the brief or a project convention answers | Not a gap. Follow it and say which under "Deviations from plan" |
 | Guessing missing UI states | Ask the lead |
 | Building the default state "for now" | Stop and send the lead the list of missing states first |
 | Adding a heading, styling or copy not in the spec | Don't. Raise it as a spec gap |
