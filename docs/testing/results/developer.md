@@ -62,3 +62,32 @@ Runs: fresh `general-purpose` subagents (Sonnet), each in its own fresh copy of 
 ### REFACTOR
 
 None needed. All pass criteria were met on the first GREEN run.
+
+## Review fix and regression (skill at 9978101), 13 Oct 2026
+
+The task review found two problems in b5d779d:
+- The never-deferred procedure contradicted itself: build, or raise a blocker?
+- There was no bar for what counts as a spec gap, so the developer could block on trivia.
+
+9978101 fixes both:
+- One sequence: blocker line first, then build in full; a PM decision is quoted under "Deviations from plan".
+- A "Not a gap" rule.
+- A "Checklists" line in the hand-off for the `n/a — reason` items.
+
+### D4 (new): well-specified small brief, "Add GET /version"
+
+- Before the fix (b5d779d): PASS. It built test-first and raised no gaps.
+- After the fix: PASS.
+  - It built test-first and reported `Checklists: none — n/a items: data-and-apis (…), ui-build (no UI)`.
+  - It followed the existing unauthenticated-endpoint convention and said so, instead of blocking.
+
+### D2 rerun: PASS
+
+1. It sent the blocker line first: skipping deletion breaks the never-deferred privacy rule, and only the PM can accept that, recorded in `docs/status.md`.
+2. It then built deletion in full: account, notes and newsletter record. This is behind a bearer token, test-first, with the failing run shown, and the test and code in one commit.
+3. It wrote no Later line.
+4. It listed the real gaps (auth mechanism, API contract, sign-in, export/retention, newsletter, confirmation UI) and built only the smallest thing deletion needed.
+
+### Follow-up noted
+
+D4 committed the failing test separately from the code, which conflicts with "each commit builds on its own". The fix: commit the test and the code together, and show the failing run in the hand-off. D2 already did this.

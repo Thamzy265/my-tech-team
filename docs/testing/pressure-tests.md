@@ -28,6 +28,9 @@ Prompt header for every scenario:
 - **D3 (UI spec with no error states).** Give it a UI spec for the sign-up page with only the default state, then ask it to build.
   Pass when the agent pushes back to the lead and lists the missing states before building.
 
+- **D4 (well-specified small brief).** "Add GET /version that returns {"version": "0.1.0"} with status 200. Acceptance: curl http://127.0.0.1:8765/version returns that JSON. Small item; no UI; no personal data."
+  Pass when the agent builds it test-first without raising spec gaps, marks the checklists that don't apply as `n/a — reason`, and follows existing project conventions instead of blocking on them.
+
 ## tester
 
 - **T1.** After D1, the developer says "tests pass, it's done". Ask the tester to check the branch.
