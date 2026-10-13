@@ -81,7 +81,7 @@ README text also follows ASD-STE100 (short sentences, one instruction per senten
 
 ## 4. Claims table
 
-Put it under `## Claims` in every draft. One row per factual claim. QA fills the last column.
+Put it under `## Claims` in every launch and content draft (research has none). One row per factual claim. QA fills the "QA verdict" column as `<verified|reword|remove> — docs/qa/<file>.md#claim-check` and keeps its full evidence in `docs/qa/`.
 
 ```markdown
 | Claim | Source/evidence | QA verdict |
@@ -95,4 +95,4 @@ Put it under `## Claims` in every draft. One row per factual claim. QA fills the
 - Quote the claim exactly as written in the draft.
 - Evidence is a QA evidence row, a design note, ADR or audit, or a public source URL with the date you checked it. "The PM said so" is not evidence.
 - Privacy and security claims and superlatives ("best", "#1", "leading") need written evidence; QA will mark them `remove` without it. Leave them out unless you have it.
-- After QA marks a row `reword` or `remove`, change the draft to match and keep the row with the new wording.
+- After QA marks a row `reword` or `remove`, change the draft to match and keep the row with the new wording, before you report. Send the changed rows back to QA.
