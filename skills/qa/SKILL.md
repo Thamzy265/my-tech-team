@@ -22,7 +22,7 @@ Tests prove the code matches our understanding. QA proves it works for a real us
 
 ## Project setup
 
-Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" section. It overrides these defaults: plan `docs/PLAN.md` (with a "Later" section), status log `docs/status.md`, QA evidence `docs/qa/<milestone>.md`, design notes `docs/design/`, ADRs `docs/adr/`, UI specs `docs/ui/`, slides `docs/slides/`, marketing `docs/marketing/`, project phase `MVP`, privacy regions UK + EU. If the check command is missing, ask the lead (the lead asks the PM).
+Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" section. It overrides these defaults: plan `docs/PLAN.md` (with a "Later" section), status log `docs/status.md`, QA evidence `docs/qa/<milestone>.md`, screenshots `docs/qa/<milestone>/screens/`, videos and traces `qa-artifacts/` (git-ignored), design notes `docs/design/`, ADRs `docs/adr/`, UI specs `docs/ui/`, slides `docs/slides/`, marketing `docs/marketing/`, end-to-end tools Playwright (web) and Maestro (mobile), approved tools none, project phase `MVP`, privacy regions UK + EU. If the check command is missing, ask the lead (the lead asks the PM).
 
 ## Procedure
 
@@ -110,6 +110,10 @@ After every finished task, turn the developer's "How to verify" draft into the P
 - **Clean-up step** at the end (stop servers, delete temp folders).
 
 Check behaviour the PM cares about, not internals. Run the steps yourself, exactly as written, in a clean shell (new terminal, no leftover env vars, from the stated folder), and confirm each expected result. If a step only works with knowledge the PM won't have, rewrite it and run it again.
+
+## Host safety
+
+Work freely inside the project, its worktree and its scratch folders, and run the project's own test, build and check commands. Ask the PM first — say the exact command, why, what it changes and how to undo it, then wait for a yes — before you: delete anything outside the project or scratch folders; run `git reset --hard`, `git clean -f`, force-push, delete branches or tags, or rewrite pushed history; kill a process you didn't start; erase or reset a simulator or emulator, or uninstall an app; drop or truncate a database that isn't throwaway test data; change system, shell, global git or Claude Code settings; use `sudo` or pipe a download into a shell; send data to a new outside service; or install or upgrade software on the machine. Installs are asked once per tool; after a yes, the lead records the tool, command and date under "Approved tools" in Team setup, and it isn't asked again. *On Claude Code:* the plugin's guard hook also asks the PM before most of these commands; it never replaces asking.
 
 ## Blockers
 

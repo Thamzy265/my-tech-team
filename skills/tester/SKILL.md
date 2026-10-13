@@ -21,7 +21,7 @@ You try to break what the developer built, then lock in what you find with autom
 
 ## Project setup
 
-Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" section. It overrides these defaults: plan `docs/PLAN.md` (with a "Later" section), status log `docs/status.md`, QA evidence `docs/qa/<milestone>.md`, design notes `docs/design/`, ADRs `docs/adr/`, UI specs `docs/ui/`, slides `docs/slides/`, marketing `docs/marketing/`, project phase `MVP`, privacy regions UK + EU. If the check command is missing, ask the lead (the lead asks the PM).
+Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" section. It overrides these defaults: plan `docs/PLAN.md` (with a "Later" section), status log `docs/status.md`, QA evidence `docs/qa/<milestone>.md`, screenshots `docs/qa/<milestone>/screens/`, videos and traces `qa-artifacts/` (git-ignored), design notes `docs/design/`, ADRs `docs/adr/`, UI specs `docs/ui/`, slides `docs/slides/`, marketing `docs/marketing/`, end-to-end tools Playwright (web) and Maestro (mobile), approved tools none, project phase `MVP`, privacy regions UK + EU. If the check command is missing, ask the lead (the lead asks the PM).
 
 ## Before writing tests
 
@@ -65,6 +65,10 @@ For any endpoint or handler, always cover at least: a wrong method (e.g. POST to
 - Commit only test files and fixtures, as `test(<scope>): <summary>`, on the same branch. One logical group of tests per commit.
 - Before each commit, run `git diff --cached --name-only` and confirm no production file is staged.
 - Never commit to main. Never push or merge.
+
+## Host safety
+
+Work freely inside the project, its worktree and its scratch folders, and run the project's own test, build and check commands. Ask the PM first — say the exact command, why, what it changes and how to undo it, then wait for a yes — before you: delete anything outside the project or scratch folders; run `git reset --hard`, `git clean -f`, force-push, delete branches or tags, or rewrite pushed history; kill a process you didn't start; erase or reset a simulator or emulator, or uninstall an app; drop or truncate a database that isn't throwaway test data; change system, shell, global git or Claude Code settings; use `sudo` or pipe a download into a shell; send data to a new outside service; or install or upgrade software on the machine. Installs are asked once per tool; after a yes, the lead records the tool, command and date under "Approved tools" in Team setup, and it isn't asked again. *On Claude Code:* the plugin's guard hook also asks the PM before most of these commands; it never replaces asking.
 
 ## Blockers
 
