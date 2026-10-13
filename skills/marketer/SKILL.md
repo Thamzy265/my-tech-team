@@ -103,8 +103,8 @@ Use this template exactly. Fill every line; write "none" rather than leaving a l
 ```markdown
 Job: <research | launch | content> — <topic/version>
 Draft: <path>
-Claims table: <path#claims | n.a. — research> (<n> claims, sent to QA: yes/no)
-QA claim check: <pending | n verified, n reworded, n removed | n.a. — research>
+Claims table: <path#claims | n/a — research> (<n> claims, sent to QA: yes/no)
+QA claim check: <pending | n verified, n reworded, n removed | n/a — research>
 Privacy items for the PM: <none | list>
 Blockers: <none | what — who can unblock — what I need — impact>
 ```

@@ -117,7 +117,7 @@ Report a blocker to the lead as soon as it appears; don't wait for the hand-off.
 
 ## Report (to the lead, who logs it in `docs/status.md`)
 
-Use this template exactly. Fill every line; write "none" or "n.a." rather than leaving a line out.
+Use this template exactly. Fill every line; write "none" or "n/a" rather than leaving a line out.
 
 ```markdown
 Milestone: <M#> — <n>/<n> criteria pass — Date: <YYYY-MM-DD> — Environment: <short>
@@ -125,9 +125,9 @@ Fail: <none | criterion — observed vs expected — repro: <steps>>
 Re-verified: <none | earlier PASS re-run — still pass | now FAIL (what changed)>
 Needs PM: <none | numbered steps the PM must do>
 Not observed: <none | what — why — who can>
-Accessibility: <pass | fail (issues) | n.a. — reason>
-Privacy: <pass | fail (items) | n.a. — reason>
-Claims: <n verified, n reworded, n removed — docs/qa/<file>.md#claim-check | n.a.>
+Accessibility: <pass | fail (issues) | n/a — reason>
+Privacy: <pass | fail (items) | n/a — reason>
+Claims: <n verified, n reworded, n removed — docs/qa/<file>.md#claim-check | n/a>
 Evidence: docs/qa/<milestone>.md
 PM check steps: <verified yes/no> — docs/qa/<milestone>.md#pm-check
 Blockers: <none | what — who can unblock — what I need — impact>
