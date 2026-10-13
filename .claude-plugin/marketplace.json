@@ -7,7 +7,7 @@
       "name": "my-tech-team",
       "source": "./",
       "description": "Team-role skills for AI coding agents: lead, developer, tester, reviewer, QA and marketer.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "category": "development",
       "tags": ["team", "workflow", "review", "qa", "security", "privacy"]
     }

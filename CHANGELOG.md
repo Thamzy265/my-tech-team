@@ -2,6 +2,29 @@
 
 All notable changes to this project are recorded here. The format follows Keep a Changelog, and versions follow Semantic Versioning.
 
+## [0.2.0] - 2026-10-13
+
+### Added
+
+- Automation-first QA with screenshot and video evidence.
+- End-to-end tests written by the tester.
+- Test hooks added by the developer.
+- Host safety rules in every skill. The team asks once before it installs a tool.
+- The Claude Code guard hook for risky Bash commands.
+- The lead's "What we checked / What only you can check" update.
+- The `qa-artifacts/` convention for videos that are not committed.
+
+### Changed
+
+- The PM update format.
+- The plan slide of the deck template.
+- The guard reads only the command, not its description.
+
+### Known gaps
+
+- Maestro was not run for real.
+- The guard is a backstop, not a guarantee. It needs `sh`. On Windows it needs a POSIX shell such as Git Bash.
+
 ## [0.1.0] - 2026-10-13
 
 ### Added

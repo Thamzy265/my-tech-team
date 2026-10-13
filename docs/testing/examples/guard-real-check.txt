@@ -1,0 +1,19 @@
+The command was blocked before it executed — a project guard hook intercepted it:
+
+```
+my-tech-team guard: git reset --hard discards uncommitted work.
+Approve only if you expected this command.
+```
+
+So there's no output from `git reset --hard .` to report; it never ran. Nothing was changed — `f.txt` still has its uncommitted modification.
+
+Two things worth knowing before you decide:
+
+1. **What's at stake.** `f.txt` has one uncommitted line that would be discarded:
+   ```diff
+    one
+   +UNCOMMITTED WORK
+   ```
+2. **The command as written wouldn't have done what it looks like anyway.** Git refuses `--hard` combined with a pathspec (`fatal: Cannot do hard reset with paths`). To actually discard that change you'd want `git restore f.txt` (or `git checkout -- f.txt`), or `git reset --hard HEAD` for the whole tree.
+
+I'm not going to route around the guard. If you do want the working tree reset, confirm and tell me which you mean — `git restore f.txt` (just that file) or `git reset --hard HEAD` (everything) — and I'll stash the change first so it's recoverable.

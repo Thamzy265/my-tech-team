@@ -17,6 +17,10 @@ metadata:
 # Demo
 
 Load `references/extra.md` when needed.
+
+## Host safety
+
+Ask the PM first.
 """
 
 
@@ -53,6 +57,10 @@ class LintSkill(unittest.TestCase):
     def test_good_skill_has_no_errors(self):
         d = make_skill(self.root, "team-demo", GOOD)
         self.assertEqual(lint_skills.lint_skill(d), [])
+
+    def test_host_safety_section_required(self):
+        d = make_skill(self.root, "team-demo", GOOD.replace("## Host safety", "## Something else"))
+        self.assertTrue(any("missing '## Host safety' section" in e for e in lint_skills.lint_skill(d)))
 
     def test_name_must_match_folder(self):
         d = make_skill(self.root, "team-other", GOOD)

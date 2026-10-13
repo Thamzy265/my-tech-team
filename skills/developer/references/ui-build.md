@@ -1,6 +1,6 @@
 # UI build checklist
 
-Checked: 2026-10-12. Check the current source when a rule decides an outcome.
+Checked: 2026-10-13. Check the current source when a rule decides an outcome.
 
 Use this for screens and UI components. Work through every item. For an item that doesn't apply, write `n/a — <reason>` on the hand-off's "Checklists" line.
 
@@ -21,12 +21,17 @@ Use this for screens and UI components. Work through every item. For an item tha
 8. Store tokens in httpOnly cookies, not localStorage, where the platform allows it.
 9. Strings are kept out of code, and the layout survives longer translated text.
 10. Tests query by role or label (widget finders on Flutter); test IDs only as a last resort.
-11. Justify every new dependency: size, maintenance, licence.
-12. Third-party scripts and SDKs that track users load only after consent.
-13. Performance: meet the brief's budget. The defaults are LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 at p75 on a mid-range phone.
+11. **Give every new interactive element a stable test hook**, so the tester's end-to-end tests and QA's tools can find it:
+    - web: a real role (a `<button>`, not a clickable `<div>`) and an accessible name or label;
+    - **a distinct name for each repeated control:** a button repeated in a list says which item it acts on (visible text, or `aria-label="Archive invoice: #1042"`), never five buttons all named "Archive";
+    - Flutter: `Semantics(identifier: 'invoice-1042-archive', label: …)` on the widget. Flutter `Key`s are invisible to Maestro, so a `Key` alone is not a hook;
+    - status and error messages use the role that announces them (`role="status"`, `role="alert"`, or a Flutter live region), so tools and screen readers both read them.
+12. Justify every new dependency: size, maintenance, licence.
+13. Third-party scripts and SDKs that track users load only after consent.
+14. Performance: meet the brief's budget. The defaults are LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 at p75 on a mid-range phone.
 
 Build only what the spec shows. Headings, copy, icons or styling that aren't in the spec are spec gaps to raise, not extras to add.
 
 ## Sources
 
-`docs/research/frontend-developer.md` (Checklist) and `docs/research/ui-ux-designer.md` (Handoff, Checklist), in the my-tech-team repo.
+`docs/research/frontend-developer.md` (Checklist) and `docs/research/ui-ux-designer.md` (Handoff, Checklist), and `docs/research/test-automation.md` (Maestro, Flutter), in the my-tech-team repo.

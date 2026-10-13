@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Notes</title>
+<style>body{font-family:system-ui,sans-serif;margin:2rem}button{margin-right:.5rem;padding:.5rem 1rem}[hidden]{display:none}</style></head>
+<body>
+<h1>My notes</h1>
+<p><button id="show-empty">Empty</button><button id="show-list">With notes</button><button id="show-error">Error</button></p>
+<section id="empty" aria-label="Empty state"><p>No notes yet. Write your first note.</p></section>
+<section id="list" aria-label="Notes list" hidden><ul><li>Buy milk</li><li>Call Sam</li></ul></section>
+<section id="error" aria-label="Error state" role="alert" hidden><p>Could not load notes. <button>Try again</button></p></section>
+<script>
+for (const id of ["empty", "list", "error"]) {
+  document.getElementById("show-" + id).addEventListener("click", () => {
+    for (const s of ["empty", "list", "error"]) document.getElementById(s).hidden = s !== id;
+  });
+}
+</script>
+</body>
+</html>

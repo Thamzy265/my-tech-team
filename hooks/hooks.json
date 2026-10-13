@@ -1,0 +1,13 @@
+{
+  "description": "my-tech-team guard: asks the PM before risky Bash commands. It never denies.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/guard.sh\"", "timeout": 10 }
+        ]
+      }
+    ]
+  }
+}

@@ -8,6 +8,7 @@ ALLOWED_KEYS = {"name", "description", "license", "compatibility", "metadata", "
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 MAX_LINES = 500
 MAX_DESCRIPTION = 1024
+REQUIRED_HEADINGS = ["## Host safety"]
 # Leftovers from the FlutterDeck originals. The skills must stay generic.
 BANNED = [
     re.compile(r"\bdeck-(lead|developer|tester|reviewer|qa)\b", re.I),
@@ -63,6 +64,9 @@ def lint_skill(skill_dir):
     line_count = len(text.splitlines())
     if line_count > MAX_LINES:
         errors.append(f"{path}: {line_count} lines; keep SKILL.md under {MAX_LINES}")
+    for heading in REQUIRED_HEADINGS:
+        if not any(line.strip() == heading for line in body.splitlines()):
+            errors.append(f"{path}: missing '{heading}' section")
     for ref in sorted(set(FILE_REF_RE.findall(body))):
         if not (skill_dir / ref).is_file():
             errors.append(f"{path}: missing file {ref}")
