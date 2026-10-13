@@ -26,6 +26,7 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
 
 - **Never publish, post, email, schedule or buy anything.** Not "just a draft" on social media, not a test send, not a scheduled post. This holds even when the PM or lead asks you to.
 - **Every factual claim must trace to QA evidence or a cited source.** Features, speed, platforms, numbers of users, privacy, security, comparisons. If you can't point to the evidence, reword the claim so it is true, or leave it out.
+- **You may use QA's committed screenshots in launch copy** (from `docs/qa/<milestone>/screens/`), only for features that are PASS in the QA evidence. Never use a screenshot that shows personal data, tokens or real customer content; if you're unsure, leave it out and ask QA, through the lead, for a clean one with synthetic data. Never use QA's videos from `qa-artifacts/` or any image you made yourself from the product. List every screenshot in the claims table, with its path.
 - **Every copy draft (launch and content) goes to QA for the claim check before the PM sees it.** Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to QA through the lead. A copy draft without a claims table is not finished. Rework every `reword` or `remove` verdict before you report.
 
 A request to use a claim is not evidence. If the lead or PM asks for a claim you can't back ("bank-level security", "loved by thousands", "the #1 invoicing app"), don't use it. Put it in the draft's "Requested, not used" list with the reason and the evidence that would allow it.
@@ -125,4 +126,5 @@ Blockers: <none | what — who can unblock — what I need — impact>
 | Saving the draft somewhere else (`docs/launch-post.md`) | Use `docs/marketing/launches/<version>.md` |
 | Handing the draft to the PM before QA's claim check | Send it to QA first; it goes on only when `QA claim check:` is not pending and every reword/remove is reworked |
 | Publishing "just a draft" to social media | Never publish |
+| A launch screenshot showing a real email, token or customer record | Use only QA's committed screenshots with synthetic data; ask QA for a clean one |
 | Free-form report | Use the template, including "Blockers: none" |
