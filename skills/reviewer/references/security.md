@@ -11,7 +11,7 @@ Use this for every branch review and every feature review. Work through every it
 3. Adjust for reality, and say how:
    - **Reachability:** can an attacker reach the code (public route, signed-in user, admin only, not reachable)?
    - **CISA KEV:** a dependency CVE on the Known Exploited Vulnerabilities list is treated as at least High.
-4. If you can't compute a CVSS score reliably (for example, no calculator or unclear metrics), say so. Give the qualitative band plus a one-line basis instead: reachability and the data exposed. Example: `High (no CVSS score: band estimate) — any signed-in user, reads other users' notes`.
+4. If you can't compute a CVSS score reliably (for example, no calculator or unclear metrics), say so. Give the qualitative band plus a one-line basis instead: reachability and the data exposed. Example: `High (no CVSS score: band estimate) — any signed-in customer, downloads other customers' invoices`.
 5. Every finding gets a severity. "Looks risky" is not a severity.
 
 ## Blocks the merge
@@ -22,7 +22,7 @@ Any one of these makes the verdict **Block**:
 - [ ] a leaked secret (in code, config, history, logs or tests): also tell the lead it must be rotated, since removing it from the diff is not enough;
 - [ ] missing authorisation on a new endpoint or object (including IDOR: an ID from the client used without an ownership check);
 - [ ] a reachable Critical or KEV-listed dependency;
-- [ ] personal data, passwords or tokens in logs, URLs, query strings or analytics;
+- [ ] personal data, secrets or tokens in logs, URLs, query strings or analytics;
 - [ ] an unmitigated top threat from the design note.
 
 A **Medium** needs a task in the plan with a due date before you approve. A **Low** goes in the report as a note. Only the PM can accept a known risk, recorded in `docs/status.md`.

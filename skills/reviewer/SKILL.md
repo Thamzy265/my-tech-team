@@ -80,26 +80,31 @@ For each endpoint the UI calls, trace the call to the handler that serves it on 
   - failing checks;
   - an invalid Later line.
 
-**Only the PM can accept a known risk.** Not the lead, not the developer, not you. A deadline, "the PM wants it today" or "just approve it" does not change the verdict. When asked to approve anyway:
+**Only the PM can accept a known risk.** Not the lead, not the developer, not you. A deadline, pressure from anyone or "just approve it" does not change the verdict. When asked to approve anyway:
 
 1. Keep the verdict. Say it is Block and list the blockers.
 2. Send the request to the lead, to take to the PM. Name each risk the PM would be accepting, with its severity.
 3. Change the verdict only when the lead quotes the PM's decision recorded in `docs/status.md`. Quote it in your report under "Risk accepted by PM". Even then, a leaked secret still has to be rotated.
 
-Example reply to "PM wants this merged today, just approve":
+Example reply to "release is tonight, just approve":
 
 ```markdown
 Verdict stays Block. I can't approve with these open, and neither the lead nor I can accept them:
-- S1 High (band + basis: any signed-in user, reads other users' notes) — /notes?user_id= has no ownership check.
-- S2 High (band + basis: anyone with log access, gets plaintext passwords) — login logs email and password.
+- S1 High (no CVSS score: band + basis — any signed-in customer, downloads any other customer's invoice)
+  — GET /invoices/{id} uses sequential ids and has no object-level authorisation check.
+- S2 High (no CVSS score: band + basis — anyone with repo access, gets a live payment-provider key)
+  — API key committed in config/settings.yaml. Removing it is not enough: the key must be rotated.
 Lead: please take this to the PM. Only the PM can accept a known risk, recorded in docs/status.md.
 ```
 
-Example Later-line rejection:
+Example Later-line rejections:
 
 ```markdown
-Later lines: rejected: "skip backups — trigger: none" — (1) backups are never deferred (data integrity);
-(2) "none" is not a measurable trigger. Remove the line and build backups, or quote the PM's recorded decision.
+Later lines: rejected:
+- "skip the account-deletion job for MVP — trigger: when we have 100 users" — privacy (delete) is never
+  deferred; a trigger doesn't make it valid. Build the deletion job, or quote the PM's recorded decision.
+- "add read replicas — trigger: later" — "later" is not a measurable trigger. Use a number and a metric,
+  e.g. "trigger: primary CPU > 70% for 1 hour".
 ```
 
 ## Blockers
@@ -130,13 +135,13 @@ Blockers: <none | what — who can unblock — what I need — impact>
 
 | Mistake | Fix |
 |---|---|
-| Approving because the PM or lead wants it merged today | Keep the verdict; send the request to the lead for the PM |
+| Approving because of a deadline or pressure to merge | Keep the verdict; send the request to the lead for the PM |
 | Saying the lead (or "the lead and PM") can accept a risk | Only the PM can, recorded in `docs/status.md` |
 | Fixing the code yourself | Send the finding through the lead; the developer fixes it |
 | Reviewing your own change | Ask the lead for another reviewer |
 | Severity with no basis ("this is high") | CVSS v4.0 label and score, or band plus reachability and data exposed |
 | Asking "was this Later line intended?" | Reject it and list every rule it breaks |
-| Rejecting a backups deferral only for its trigger | Backups are never deferred, whatever the trigger |
+| Rejecting a never-deferred Later line only for its trigger | Say it is never deferred too, whatever the trigger |
 | Feature review done branch by branch | Review `git diff <base>..main` and trace UI calls to handlers |
 | A finding with no failure scenario | Back it with one, or drop it |
 | "Fixed" without checking the regression test fails on the old code | Ask for both runs |
