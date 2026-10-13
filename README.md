@@ -43,7 +43,7 @@ The plugin adds about 500 tokens to each session. Each skill loads its full text
 
 1. Clone this repository.
 2. Copy the folders in `skills/` into the `.agents/skills/` folder of your project.
-3. If a skill with the same name is already in that folder, rename the new folder. Change the `name:` line in its `SKILL.md` to the same new name.
+3. If a skill with the same name is already in that folder, rename the new folder. Change the `name:` line in its `SKILL.md` to the same new name. The skills refer to each other by these names (for example `developer`, `qa`). If you rename a skill, change those references too.
 
 ## Set up your project
 
