@@ -38,6 +38,6 @@ The template has 9 slides: a title slide, then these 8, in this order.
 ## Show it and wait
 
 1. Give the PM the path (`docs/slides/<item>.html`) and say how to open it: in any browser; arrow keys move between slides; print saves a PDF.
-2. *On Claude Code:* open it in the browser pane, or send it as a rendered file.
+2. *On Claude Code:* open it in the browser pane, or send it as a rendered file in this session; don't upload or host it anywhere.
 3. Ask for approval and the decisions on slide 8. Record the PM's answer, dated, in the status log.
 4. **Don't brief the developer until the PM approves.** If the PM changes something, update the deck, the design note and the spec, and ask again.
