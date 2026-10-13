@@ -21,5 +21,6 @@ done
 
 echo "== claude plugin validate --strict"
 claude plugin validate . --strict
+claude plugin validate .claude-plugin/plugin.json --strict   # also validates hooks/hooks.json
 
 echo "All checks passed."
