@@ -70,15 +70,16 @@ The hook asks about these commands:
 
 - Deleting files outside the project.
 - `git reset --hard`.
+- Discarding uncommitted work with `git restore`, `git checkout` or `git stash`.
 - `git clean`.
 - A force-push.
 - Deleting branches or tags.
 - Killing other processes.
 - Erasing simulators or emulators.
 - Dropping databases.
-- `sudo`.
+- `sudo` or `doas`.
 - Piping a download into a shell.
-- Global installs.
+- Global installs. This includes `pip`, `bun`, `cargo`, `go`, `gem`, `uv tool` and `pipx`.
 - Changing system, shell or Claude Code settings.
 
 The written rules in every skill apply on all tools.
