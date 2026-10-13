@@ -32,6 +32,7 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
    - acceptance criteria are missing or can't be tested.
 3. **If the spec is incomplete, stop before building.** Send the lead a list of exactly what is missing, one line per gap, and wait for the answer. Don't guess, don't fill gaps with your own choices, and don't build "the default state for now". List the gaps under "Spec gaps raised" in the hand-off.
    - **Not a gap:** checklist items that don't apply to this item (mark them `n/a — <reason>` in the hand-off), or questions an existing project convention or the brief already answers (follow the convention and say which under "Deviations from plan").
+   - **Test hooks are never a gap and never an extra.** A role, an accessible name that says which item a repeated control acts on, or a `Semantics` identifier is a rule you apply (`references/ui-build.md`), not a question for the lead. Visible copy the spec doesn't show is still a gap.
    - **A real gap** is one whose answer changes user-visible behaviour, data handling, or a never-deferred rule.
 4. Check the current docs of any external tool or API you use. Write down how it differs from the plan.
 5. Branch from an up-to-date main: `git switch -c <type>/<topic>` (for example `feat/health-endpoint`). Use the branch the lead named, if any. Never commit to main.
@@ -85,16 +86,18 @@ The trigger must be something a person can measure: `p95 > 500 ms on /search`, `
 - **Test-first, every time.** Write the failing test, run it, and keep the failure output. Then write the code that makes it pass. A test written after the code is not test-first. *On Claude Code:* use superpowers:test-driven-development.
 - **Commit the failing test together with the code that makes it pass**, so every commit builds and passes on its own. The failing run goes in the hand-off's Tests line, not in a commit of its own.
 - Follow the project's rules exactly (Team setup and any project rules section).
+- **Add a stable test hook to every new interactive element** as you build it: a role and an accessible name or label on web (a distinct one per repeated control, such as "Archive invoice: #1042"), `Semantics(identifier: …)` on Flutter. Details in `references/ui-build.md`.
 - Commit as you go: one logical change (test and code together) per commit.
 - If you hit a blocker, report it now (see Blockers). Don't wait for the hand-off.
 
 ## Before handing off
 
 1. The check command passes. Paste the test count from its output. Without that output the work is not ready.
-2. Atomic Conventional Commits (`<type>(<scope>): <summary>`), each one building on its own, with the lockfile matching every commit.
-3. Every skipped item has a Later line with a measurable trigger.
-4. No plan box ticked and nothing marked done.
-5. Never push or merge. The lead does that.
+2. If the project has an end-to-end suite, run it and paste the result (passed, failed, skipped). A failing e2e test is fixed before hand-off, or reported under "Risks / unverified" with the failure line. Don't install a missing browser or tool to run it: that needs the PM (Host safety). Write `E2E: not run — <tool> not installed` instead.
+3. Atomic Conventional Commits (`<type>(<scope>): <summary>`), each one building on its own, with the lockfile matching every commit.
+4. Every skipped item has a Later line with a measurable trigger.
+5. No plan box ticked and nothing marked done.
+6. Never push or merge. The lead does that.
 
 ## Hand-off note (to the lead)
 
@@ -104,6 +107,8 @@ Use this template exactly. Fill every line; write "none" rather than leaving a l
 Branch: <name> (<n> commits)
 Built: <what, in 2-4 bullets>
 Tests: <count> passing; new tests cover <...>; first failing run: <test name and failure line, before the fix>
+E2E: <suite result, e.g. 12 passed, 0 failed (npx playwright test) | not run — <tool> not installed | n/a — no suite>
+Test hooks: <new controls and their names or identifiers | n/a — no UI>
 Deviations from plan: <none | what and why>
 Checklists: <data-and-apis / ui-build / none> — n/a items: <list or none>
 Risks / unverified: <none | what>
@@ -144,6 +149,9 @@ Report a blocker to the lead as soon as it appears; don't wait for the hand-off.
 | Acting on a PM decision quoted only in chat | Open `docs/status.md` and confirm it is there with its date |
 | Blocking on a question the brief or a project convention answers | Not a gap. Follow it and say which under "Deviations from plan" |
 | Guessing missing UI states | Ask the lead |
+| Five "Archive" buttons with the same name, or a Flutter `Key` as the only hook | A distinct accessible name per repeated control; `Semantics(identifier: …)` on Flutter |
+| Asking the lead whether to add accessible names | Not a gap; apply the test-hook rule |
+| Handing off without running the existing e2e suite | Run it and paste the result on the "E2E" line |
 | Building the default state "for now" | Stop and send the lead the list of missing states first |
 | Adding a heading, styling or copy not in the spec | Don't. Raise it as a spec gap |
 | Ticking the plan box or marking the item done | Don't. The lead does that after the gates |
