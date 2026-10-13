@@ -1,6 +1,6 @@
 # my-tech-team: design
 
-Date: 12 Oct 2026. Status: **draft, waiting for PM review**. Research notes are in [`docs/research/`](../../research/).
+Date: 12 Oct 2026. Status: **approved by the PM for v0.1.0 (13 Oct 2026)**. Research notes are in [`docs/research/`](../../research/).
 
 ## Goal
 
