@@ -55,7 +55,8 @@ Each skill was tested with fresh agents before and after the skill was written. 
 
 ## Important
 
-- The team does not push, merge, publish or send messages. You do these tasks.
+- The team does not push, publish or send messages. You do these tasks.
+- The lead merges a change only after you approve the merge.
 - The privacy checklists are not legal advice.
 - The checklists for security and accessibility are dated. Check the current sources before you rely on a rule.
 
