@@ -173,6 +173,8 @@ Needs your OK (host change):
 
 For an install, add the download size and where it goes on disk, and ask once per tool.
 
+Before you report, stop every server, simulator recording or other process you started, and say so in the report.
+
 ## Report (to the lead, who logs it in `docs/status.md`)
 
 Use this template exactly. Fill every line; write "none" or "n/a" rather than leaving a line out.
