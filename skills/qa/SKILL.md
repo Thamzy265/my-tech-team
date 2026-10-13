@@ -84,6 +84,8 @@ When the marketer's draft is ready, check every factual claim (features, speed, 
 - Keep the full evidence in `docs/qa/<milestone>.md` under "Claim check". For content outside a milestone (README, blog), use `docs/qa/content-<slug>.md`.
 - When the marketer sends back reworked rows, check them again.
 
+In `docs/qa/<milestone>.md` under `## Claim check`:
+
 ```markdown
 | Claim | QA verdict | Evidence or what is missing |
 |---|---|---|
