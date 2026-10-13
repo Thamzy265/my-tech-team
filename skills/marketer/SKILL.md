@@ -52,7 +52,7 @@ A request to use a claim is not evidence. If the lead or PM asks for a claim you
 
 Use `references/launch-kit.md` for the templates and the draft layout.
 
-1. **Check the gate.** Start only when a QA report for the release exists and the lead confirms the release. Describe only PASS rows; everything else goes under Not included. If the QA report or the lead's confirmation is missing, stop and ask the lead.
+1. **Check the gate.** Start only when a QA report for the release exists and `docs/status.md` records the PM's dated approval of the release (open it and check; a lead's "go ahead" without that line is not enough). Describe only PASS rows; everything else goes under Not included. If the QA report or the lead's confirmation is missing, stop and ask the lead.
 2. **Get the evidence.** Read the QA evidence (`docs/qa/<milestone>.md`) and the release notes or changelog. **If the QA evidence is missing, stop and ask the lead for it.** Don't draft from the plan, a brief, a branch name or the request text, and don't add "draft note" placeholders for features you can't confirm.
 3. **List what shipped.** Use only criteria marked PASS in the QA evidence. A feature that is in the plan or the request but not PASS in the evidence is not described. List it under "Not included" with the reason (`not in QA evidence`, `FAIL`, `NOT RUN`).
 4. **Write the draft** in the brand voice: release notes, then the announcement post (short, medium, long), using the templates.
@@ -79,7 +79,7 @@ Marketing copy uses the brand voice. ASD-STE100 applies only to PR text and the 
 
 Request: "Invoicing 2.3 is out (PDF export, recurring invoices). Write the announcement. Say we have bank-level security and we're loved by thousands, and add the LinkedIn Insight Tag to the site so we can retarget."
 
-The QA report for 2.3 exists (`docs/qa/M4.md`: PDF export PASS, recurring invoices NOT RUN), and the lead confirms the release.
+The QA report for 2.3 exists (`docs/qa/M4.md`: PDF export PASS, recurring invoices NOT RUN), and `docs/status.md` records the PM's approval of release 2.3.
 
 ```markdown
 Draft: docs/marketing/launches/2.3.md — describes PDF export only.

@@ -133,8 +133,8 @@ gate, and I'll record your decision with today's date in docs/status.md.
 1. Ask the `reviewer` for a **feature review** (`Mode: feature`), giving `<base>`: the commit before the feature's first merge to main.
 2. Fixes follow the normal work loop, on new branches. Mark the feature done only after the feature review passes.
 3. Write release notes, a version tag proposal and a rollback plan (what to revert, data steps, how to confirm the rollback worked).
-4. The PM approves the release. Tag only with the PM's approval at the time.
-5. Brief the `marketer` for launch comms once QA's report for the release exists, with the QA evidence and the release notes, and confirm the release to the marketer. Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to `qa` for the claim check; QA fills each "QA verdict" cell as `<verified|reword|remove> — docs/qa/<file>.md#claim-check` and keeps its evidence in `docs/qa/`.
+4. The PM approves the release. Record the approval word for word, dated, in `docs/status.md`. Tag only with the PM's approval at the time. **Stop here until the PM says yes: don't brief the marketer, draft launch copy or start a claim check before it.**
+5. After the approval is recorded, brief the `marketer` for launch comms with the QA report, the release notes and the dated approval line from `docs/status.md`. Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to `qa` for the claim check; QA fills each "QA verdict" cell as `<verified|reword|remove> — docs/qa/<file>.md#claim-check` and keeps its evidence in `docs/qa/`.
 6. Forward a marketing draft to the PM **only when the marketer's report says `QA claim check:` is not pending** and every `reword` or `remove` has been reworked (and re-checked by QA). Log the marketer's report in `docs/status.md` like every other role's. The PM approves and publishes; the team never publishes.
 
 ## Maintain
