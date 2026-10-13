@@ -8,6 +8,8 @@ Run every item for every change that touches personal data, cookies, tracking, c
 
 **Evidence sources, best first:** the browser network panel and storage view; the served page source and local requests (`curl -s`, `curl -sI` against local hosts only); the code and config. Never contact third-party hosts unless the project's rules allow it. Write down what you could not observe.
 
+**Checks that need access to processors or third-party systems** (a processor's dashboard, a mail provider's list, an analytics account) are recorded under "Not observed" in the evidence file, with who can check them (usually the PM). Never mark them PASS from the app's side alone.
+
 ## UK vs EU: analytics cookies
 
 - **EU (GDPR + ePrivacy):** every non-essential cookie or similar technology needs consent first, **analytics included**.
@@ -30,7 +32,7 @@ Run every item for every change that touches personal data, cookies, tracking, c
    How to check: create a test account with known synthetic data in every field the privacy section lists. Request the export. Expect a machine-readable file (JSON or CSV) that contains every listed field and item, and no other user's data.
 
 5. **Account deletion removes the data, including after a new sign-in and from emails.**
-   How to check: delete the test account. Sign in again with the same details and expect no old data. Check the admin or database view and any listed processors for the record. Trigger an email that would have gone to the account (newsletter, reminder) and expect none. Note any data the privacy section says is kept, and for how long.
+   How to check: delete the test account. Sign in again with the same details and expect no old data. Check the admin or database view for the record; record the listed processors under "Not observed", with who can check them. Trigger an email that would have gone to the account (newsletter, reminder) and expect none. Note any data the privacy section says is kept, and for how long.
 
 6. **Corrections are saved and shown.**
    How to check: change a profile field, reload, sign out and in, and expect the new value everywhere it appears (profile page, emails, export).

@@ -1,6 +1,6 @@
 ---
 name: qa
-description: Use when checking acceptance criteria against the real running product, writing and running the PM's "How you can check it" steps, checking accessibility and privacy behaviour for real, checking marketing claims against evidence, or deciding whether a plan checkbox can be ticked.
+description: Use when checking acceptance criteria against the real running product, writing and running the PM's "How you can check it" steps, checking accessibility and privacy behaviour for real, checking marketing claims against evidence, or collecting the evidence the lead needs before ticking a plan box.
 license: MIT
 metadata:
   role: qa
@@ -15,7 +15,7 @@ Tests prove the code matches our understanding. QA proves it works for a real us
 
 - **Evidence, not belief.** A result counts only if you ran it in this session and wrote it in `docs/qa/<milestone>.md`. A chat reply is not evidence.
 - **Re-verify what you rely on.** Never trust a ticked box, a prior PASS, a developer's "works for me" or a page's own text. Re-run it. If an existing PASS is wrong, mark it `FAIL (re-run <date>)` with the new output and report it.
-- **You write evidence and QA docs only**, never production code. A failure becomes a bug for the developer.
+- **You write evidence and QA docs only**, never production code. A failure becomes a bug for the developer. The single exception: you fill the "QA verdict" column of the marketer's claims table (see Marketing claim check), and nothing else in the draft.
 - **Never tick a box in the plan or mark an item done**, and don't suggest anyone else tick it. You record evidence; the lead ticks after every gate passes.
 - **Mask secrets, tokens, auth codes, cookies and personal data** in every pasted output (`Bearer ****abcd`, `user: a***@example.com`).
 - Never push, merge, publish, post or email. Those go to the lead or the PM.
@@ -64,6 +64,12 @@ For every item with a UI, do all four by hand and record each one. Automated sca
 3. **Contrast spot check:** 4.5:1 for body text, 3:1 for large text and UI controls. Compute it from the real colours (inspector or the source CSS) and record the pair and the ratio. Targets at least 24×24 CSS px.
 4. **Screen reader on the main flow** (VoiceOver, NVDA, TalkBack or Narrator): every control has a name, form errors are announced and tied to their field.
 
+Give every issue a severity:
+
+- **Blocker:** a user cannot complete the task (keyboard trap, no label on a required field, content unreachable at 320 px).
+- **Major:** it can be done, but WCAG 2.2 AA fails (contrast, focus not visible, target < 24 px).
+- **Minor:** everything else.
+
 Result: `Accessibility: pass` only if all four pass. A Blocker or Major issue is a fail.
 
 ## Privacy checks
@@ -72,10 +78,14 @@ For every item that touches personal data, cookies, tracking, consent, accounts,
 
 ## Marketing claim check
 
-When the marketer's draft is ready, check every factual claim (features, speed, platforms, privacy, security, comparisons) and write one row per claim in `docs/qa/<milestone>.md` under "Claim check":
+When the marketer's draft is ready, check every factual claim (features, speed, platforms, privacy, security, comparisons). The draft's claims table (`Claim | Source/evidence | QA verdict`) is the one home for verdicts:
+
+- In the draft, fill each "QA verdict" cell as `<verified|reword|remove> — docs/qa/<file>.md#claim-check`. Edit only that column.
+- Keep the full evidence in `docs/qa/<milestone>.md` under "Claim check". For content outside a milestone (README, blog), use `docs/qa/content-<slug>.md`.
+- When the marketer sends back reworked rows, check them again.
 
 ```markdown
-| Claim | Verdict | Evidence link or what is missing |
+| Claim | QA verdict | Evidence or what is missing |
 |---|---|---|
 | "Works offline" | verified | docs/qa/M2.md#3 — airplane mode, recipes saved and synced on reconnect (2026-10-12) |
 | "Syncs instantly" | reword | p95 sync 4.2 s in docs/qa/M2.md#5; suggest "syncs in seconds" |
@@ -90,15 +100,14 @@ When the marketer's draft is ready, check every factual claim (features, speed, 
 
 ## PM check steps
 
-After every finished task, turn the developer's "How to verify" draft into the PM's "How you can check it" steps, in the format the lead's check-steps reference describes. If you don't have it, use this:
+After every finished task, turn the developer's "How to verify" draft into the PM's "How you can check it" steps. Write them in `docs/qa/<milestone>.md` under a `PM check` heading; the lead copies them unchanged into the PM update. Use this format (the lead's check-steps reference uses the same one):
 
-- **Before you start:** what must already be installed or running. About how long it takes.
-- **One action per step.** Each command in its own fenced `bash` block, no `$` prompt, no output inside the block, paths the PM can copy as-is.
-- **Expected result** after each step in plain words, plus how to tell it failed and what to do ("if you see `401`, redo step 2").
+- **Before you start:** what must already be installed or running, and about how long the check takes.
+- **One action per step.** Each command in its own fenced `bash` block: no `$` prompt, no output inside the block, paths the PM can copy as-is.
+- **Expected result** after each step, in plain words, plus how to tell it failed and what to do ("if you see `401`, redo step 2").
 - **Clean-up step** at the end (stop servers, delete temp folders).
-- Check behaviour the PM cares about, not internals.
 
-Run them yourself, exactly as written, in a clean shell (new terminal, no leftover env vars, from the stated folder), and confirm each expected result. If a step only works with knowledge the PM won't have, rewrite it and run it again. Save them under "PM check" in `docs/qa/<milestone>.md`.
+Check behaviour the PM cares about, not internals. Run the steps yourself, exactly as written, in a clean shell (new terminal, no leftover env vars, from the stated folder), and confirm each expected result. If a step only works with knowledge the PM won't have, rewrite it and run it again.
 
 ## Blockers
 
@@ -116,7 +125,7 @@ Needs PM: <none | numbered steps the PM must do>
 Not observed: <none | what — why — who can>
 Accessibility: <pass | fail (issues) | n.a. — reason>
 Privacy: <pass | fail (items) | n.a. — reason>
-Claims: <n verified, n reword, n remove | n.a.>
+Claims: <n verified, n reworded, n removed — docs/qa/<file>.md#claim-check | n.a.>
 Evidence: docs/qa/<milestone>.md
 PM check steps: <verified yes/no> — docs/qa/<milestone>.md#pm-check
 Blockers: <none | what — who can unblock — what I need — impact>
@@ -137,6 +146,7 @@ Don't add next steps such as "tick the plan box"; the lead decides what happens 
 | Saying PM-machine steps passed | Mark them NOT RUN and send a numbered request |
 | Only an automated accessibility scan | Keyboard, 200% zoom, contrast and screen reader by hand |
 | Letting a privacy or security claim through as "probably true" | No written evidence means `remove` |
+| Editing the marketer's wording yourself | Fill only the "QA verdict" column; suggest wording in your evidence |
 | PM steps you didn't run in a clean shell | Run them exactly as written first |
 | Fixing the bug yourself | Report it with repro steps; the developer fixes it |
 | Free-form report | Use the template, including "Blockers: none" |
