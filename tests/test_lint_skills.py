@@ -92,6 +92,25 @@ class LintSkill(unittest.TestCase):
                        refs=("references/extra.md", "assets/deck-template.html"))
         self.assertEqual(lint_skills.lint_skill(d), [])
 
+    def test_url_path_is_not_a_file_reference(self):
+        d = make_skill(self.root, "team-demo", GOOD + "See https://example.com/references/missing.md.\n")
+        self.assertEqual(lint_skills.lint_skill(d), [])
+
+    def test_banned_terms_scanned_in_assets_and_scripts(self):
+        d = make_skill(self.root, "team-demo", GOOD,
+                       refs=("references/extra.md", "assets/deck-template.html", "scripts/run.py"))
+        (d / "assets" / "deck-template.html").write_text("<h1>FlutterDeck</h1>\n")
+        errors = lint_skills.lint_skill(d)
+        self.assertTrue(any("deck-template.html" in e and "project-specific term" in e for e in errors))
+
+    def test_block_scalar_description_rejected(self):
+        for marker in (">", "|"):
+            with self.subTest(marker=marker):
+                text = GOOD.replace("description: Use when testing the linter. Does nothing else.",
+                                    f"description: {marker}\n  Use when testing the linter.")
+                d = make_skill(self.root / ("s" + str(ord(marker))), "team-demo", text)
+                self.assertTrue(any("single line" in e for e in lint_skills.lint_skill(d)))
+
 
 class Main(unittest.TestCase):
     def test_exit_code_reflects_errors(self):

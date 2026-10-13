@@ -15,7 +15,9 @@ BANNED = [
     re.compile(r"\bpnpm\b", re.I),
     re.compile(r"\bzod\b", re.I),
 ]
-FILE_REF_RE = re.compile(r"\b((?:references|assets|scripts)/[A-Za-z0-9._/-]+\.[a-z]+)")
+TEXT_SUFFIXES = {".md", ".html", ".py", ".sh", ".json", ".txt"}
+BLOCK_SCALAR_RE = re.compile(r"^[>|][+-]?\d*$")
+FILE_REF_RE = re.compile(r"(?<![\w/:.-])((?:references|assets|scripts)/[A-Za-z0-9._/-]+\.[a-z]+)")
 
 
 def parse_frontmatter(text):
@@ -54,7 +56,9 @@ def lint_skill(skill_dir):
     for key in sorted(set(meta) - ALLOWED_KEYS):
         errors.append(f"{path}: non-spec frontmatter key '{key}'")
     description = meta.get("description", "")
-    if not 1 <= len(description) <= MAX_DESCRIPTION:
+    if BLOCK_SCALAR_RE.match(description):
+        errors.append(f"{path}: description must be a single line (block scalars '>' and '|' are not supported)")
+    elif not 1 <= len(description) <= MAX_DESCRIPTION:
         errors.append(f"{path}: description must be 1-{MAX_DESCRIPTION} characters (got {len(description)})")
     line_count = len(text.splitlines())
     if line_count > MAX_LINES:
@@ -62,7 +66,7 @@ def lint_skill(skill_dir):
     for ref in sorted(set(FILE_REF_RE.findall(body))):
         if not (skill_dir / ref).is_file():
             errors.append(f"{path}: missing file {ref}")
-    for md in [path, *sorted(skill_dir.glob("references/*.md"))]:
+    for md in sorted(f for f in skill_dir.rglob("*") if f.is_file() and f.suffix in TEXT_SUFFIXES):
         content = md.read_text()
         for pattern in BANNED:
             m = pattern.search(content)
