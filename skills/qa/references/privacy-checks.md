@@ -38,7 +38,7 @@ Run every item for every change that touches personal data, cookies, tracking, c
    How to check: change a profile field, reload, sign out and in, and expect the new value everywhere it appears (profile page, emails, export).
 
 7. **Unsubscribe works on the first click.**
-   How to check: subscribe a test address, open the unsubscribe link from a real sent message (local mail catcher or test inbox), and expect one click, no sign-in and no extra form. Trigger the next send and expect nothing to arrive. Also check the signup form: a marketing consent checkbox must start unticked.
+   How to check: subscribe a test address, open the unsubscribe link from a real sent message in a local mail catcher (an external test inbox only if the project's rules allow it), and expect one click, no sign-in and no extra form. Trigger the next send and expect nothing to arrive. Also check the signup form: a marketing consent checkbox must start unticked.
 
 8. **The privacy notice matches what the app collects and which vendors it uses.**
    How to check: list every field the forms collect and every third-party host seen in the Network tab or the page source. Compare with the privacy notice. Every field and vendor must be named, with its purpose. Anything missing is a FAIL.
