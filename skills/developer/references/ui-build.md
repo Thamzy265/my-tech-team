@@ -4,7 +4,7 @@ Checked: 2026-10-12. Check the current source when a rule decides an outcome.
 
 Use this for screens and UI components. Work through every item. For an item that doesn't apply, write `n/a — <reason>` on the hand-off's "Checklists" line.
 
-1. Read the UI spec. Every state in its states matrix must be built (default, hover, focus, disabled, loading, empty, error, success, long content, offline). If the matrix, breakpoints or accessibility notes are missing, stop and send the lead the list before building.
+1. Read the UI spec. Every state in its states matrix must be built (default, hover, focus, disabled, loading, empty, error, success, long content, offline, permission denied). If the matrix, breakpoints or accessibility notes are missing, stop and send the lead the list before building.
 2. Structure first (semantic elements, or `Semantics` on Flutter), then style, then behaviour.
 3. Use design tokens or theme values only, never hard-coded colours or sizes.
 4. WCAG 2.2 AA:

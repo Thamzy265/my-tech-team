@@ -26,7 +26,7 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
 
 1. Read the brief and everything it links: design note, UI spec, privacy section, acceptance criteria.
 2. Check the spec is complete enough to build. It is **incomplete** if, for example:
-   - a UI spec has no states matrix, or is missing states (loading, empty, error, success, disabled, long content, offline), breakpoints (including 320 px) or accessibility notes;
+   - a UI spec has no states matrix, or is missing states (default, hover, focus, disabled, loading, empty, error, success, long content, offline, permission denied), breakpoints (including 320 px) or accessibility notes;
    - an API has no error shape, status codes or pagination rule;
    - new personal data has no purpose, retention rule, or delete and export behaviour;
    - acceptance criteria are missing or can't be tested.

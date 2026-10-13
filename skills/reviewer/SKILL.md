@@ -50,7 +50,7 @@ For each endpoint the UI calls, trace the call to the handler that serves it on 
    - outbound calls without timeouts, or retries that are unbounded or not idempotent;
    - N+1 queries;
    - shallow or leaky modules (callers depend on internals, or a module only forwards calls);
-   - UI that doesn't match the UI spec's states (loading, empty, error, success, disabled, long content, offline).
+   - UI that doesn't match the UI spec's states (default, hover, focus, disabled, loading, empty, error, success, long content, offline, permission denied).
 4. **Security and privacy review.** Read `references/security.md` and work through every item. Write `n/a — <reason>` for items that don't apply. Give every finding a severity as that file describes. *On Claude Code:* also run the `security-review` skill. It diffs against `origin/HEAD`; if the repo has no remote, create a temporary ref first with `git update-ref refs/remotes/origin/HEAD main` and delete it afterwards with `git update-ref -d refs/remotes/origin/HEAD`. If a remote exists but `origin/HEAD` is not set, run `git remote set-head origin --auto` first.
 5. **Later lines.** Find every Later line the change adds (`git diff` on the plan file). Check each line against **all three** rules below and list every rule it breaks. One failure is enough to reject it; don't stop at the first.
    - It has the format `- <what> — <why> — trigger: <measurable condition> — noted <date> by <role>`.
