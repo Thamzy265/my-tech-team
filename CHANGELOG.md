@@ -2,7 +2,7 @@
 
 All notable changes to this project are recorded here. The format follows Keep a Changelog, and versions follow Semantic Versioning.
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2026-10-13
 
 ### Added
 
