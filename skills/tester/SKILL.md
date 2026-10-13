@@ -61,8 +61,9 @@ Example ask (an invoice list in a Python web app, browser not installed):
 Needs PM approval (install, asked once):
 - Command: playwright install chromium   (run inside the project's venv)
 - Why: run the 4 new end-to-end tests in e2e/test_invoices.py (send, filter, empty list, failed load).
-- What it changes: downloads Chromium, about 281 MB, into ~/Library/Caches/ms-playwright.
-- How to undo: delete that folder.
+- What it changes: downloads Chromium, about 281 MB, into ~/Library/Caches/ms-playwright (checked first with `playwright install --dry-run chromium`: the needed revision is not on this machine).
+- How to undo: delete only the folders this install adds (chromium-<rev>, chromium_headless_shell-<rev>, ffmpeg-<rev>, as listed by `playwright install --dry-run chromium`), not the whole ms-playwright cache.
+- Option: if another browser revision is already installed, pinning @playwright/test to the matching version avoids the download.
 After a yes I run the tests and ask the lead to record Playwright under "Approved tools".
 ```
 

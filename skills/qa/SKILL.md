@@ -76,7 +76,7 @@ You test the product yourself, with tools. The PM's check is the exception, not 
    - payments or real emails;
    - subjective sign-off ("does this look right?").
 5. **PM steps are written only for items on that list.** Everything else is automated, or done by you by hand with the reason written down, and shown as evidence.
-6. **If the tool isn't installed,** write the exact spec or flow you would run (into the evidence file), and ask once to install it (see Asking the PM before a host change). Meanwhile, drive the product with any browser or device tool you have (*On Claude Code:* the browser pane, or the iOS Simulator tools) and still save a screenshot of every key state. Record what the missing tool would have added under "Not observed".
+6. **If the tool isn't installed,** still write the ready-to-run spec or flow file into the project (for example `e2e/<flow>.spec.ts` or `.maestro/<flow>.yaml`) and commit it with the evidence file, so it runs the moment the tool is approved. Ask once to install it (see Asking the PM before a host change). Meanwhile, drive the product with any browser or device tool you have (*On Claude Code:* the browser pane, or the iOS Simulator tools) and still save a screenshot of every key state. Record what the missing tool would have added under "Not observed".
 
 Worked example (a booking form with three acceptance criteria):
 

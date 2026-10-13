@@ -45,7 +45,7 @@ Use the tool the project's Team setup names. The defaults are Playwright for web
   ```
 
   QA turns screenshots and video fully on for its own run; don't commit `'on'`.
-- **Run:** `npx playwright test` (Python: `pytest e2e`). The browser install (`npx playwright install chromium`, about 281 MB, into `~/Library/Caches/ms-playwright` on macOS or `~/.cache/ms-playwright` on Linux) is asked once; `--with-deps` on Linux needs `sudo` and is asked separately.
+- **Run:** `npx playwright test` (Python: `pytest e2e`). The browser install (`npx playwright install chromium`, about 281 MB, into `~/Library/Caches/ms-playwright` on macOS or `~/.cache/ms-playwright` on Linux) is asked once. Before asking, run `npx playwright install --dry-run chromium`: if the browser revisions it lists are already on the machine, no install and no ask. If another revision is present, pinning `@playwright/test` to the version that matches it avoids a download; offer that as an option. To undo an install, remove only the folders it added (`chromium-<rev>`, `chromium_headless_shell-<rev>`, `ffmpeg-<rev>` from the dry-run list), never the whole `ms-playwright` cache, which other projects may use. `--with-deps` on Linux needs `sudo` and is asked separately.
 - `npx playwright codegen <url>` can record a first draft; rewrite its locators to roles and labels.
 
 ## Maestro (mobile)
