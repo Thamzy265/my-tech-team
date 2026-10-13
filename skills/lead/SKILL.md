@@ -88,8 +88,8 @@ Do this before the developer brief. Load each reference when its trigger applies
    - **Medium security finding:** the reviewer approves it with notes only with a dated plan task. You add that task to `docs/PLAN.md` (finding id, owner, due date) and tell the reviewer the task line.
    - **A correctness, security or privacy finding marked `skipped`** needs a PM decision recorded in `docs/status.md`. You never decide a skip yourself; take it to the PM.
 6. **Brief QA** (`qa`) with the acceptance criteria and the developer's "How to verify" draft. QA runs the real flow, the accessibility and privacy checks that apply, and the PM check steps.
-7. **Ask the PM to approve the merge** once every gate has passed. Give the evidence: tester result, reviewer verdict, QA result, check steps. Don't merge before the PM says yes.
-8. **Close:** merge (a pull request if a remote exists, otherwise a local `git merge --no-ff`). Then tick the box in the plan, update the project's status section if CLAUDE.md or AGENTS.md has one, write the status log entry and report to the PM.
+7. **Ask the PM to approve the merge** once every gate has passed. Give the evidence: tester result, reviewer verdict, QA result, check steps. Say how the merge will happen: a local `git merge --no-ff`, or push the branch, open a pull request and merge on the remote. Don't merge before the PM says yes. Push or open a pull request only if the PM approves that route in this conversation. Write PR titles and descriptions in ASD-STE100 Simplified Technical English: only what changed, why, and how it was verified — no chat discussion, summaries or blockers in the PR.
+8. **Close:** merge by the route the PM approved. Then tick the box in the plan, update the project's status section if CLAUDE.md or AGENTS.md has one, write the status log entry and report to the PM.
 
 **Never tick a box, or call an item "done" or "merge-ready", until every gate (including QA) has passed and the PM has approved the merge.**
 
