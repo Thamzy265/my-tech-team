@@ -24,8 +24,8 @@ Replace `deck-lead` with `deck-developer`, `deck-tester`, `deck-reviewer` or `de
 
 **Rules for every task:**
 - Atomic Conventional Commits. End each message with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
-- Work on `main` in this repo, which is a new project with no other contributors.
-- Push only at the checkpoints marked **PUSH**, since the PM has approved pushes to this repo.
+- Work on the branch `feat/v0.1.0` (GitHub flow). Never commit to `main` directly. The PM approves the merge through the pull request.
+- Push the branch only at the checkpoints marked **PUSH**. After the first push, the controller opens a draft pull request so that CI runs on every push.
 - Tagging a release needs the PM's approval at the time.
 
 ---
@@ -456,7 +456,7 @@ git commit -m "ci: run linter, unit tests, skills-ref and plugin validate"
 git push
 ```
 
-Run: `gh run watch --exit-status $(gh run list --limit 1 --json databaseId --jq '.[0].databaseId')`
+Run: `gh run watch --exit-status $(gh run list --branch feat/v0.1.0 --limit 1 --json databaseId --jq '.[0].databaseId')`
 
 Expected: the `check` job passes.
 
@@ -1259,7 +1259,7 @@ git push
 Then check that CI passes:
 
 ```bash
-gh run watch --exit-status $(gh run list --limit 1 --json databaseId --jq '.[0].databaseId')
+gh run watch --exit-status $(gh run list --branch feat/v0.1.0 --limit 1 --json databaseId --jq '.[0].databaseId')
 ```
 
 ---
