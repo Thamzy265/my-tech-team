@@ -148,7 +148,7 @@
       <div class="card ok"><h3>Fine without asking</h3><ul><li>Work inside the project and its scratch folders</li><li>The project's own test, build and check commands</li><li>Stopping processes the agent started</li></ul></div>
       <div class="card no"><h3>Ask first: exact command, why, effect, undo</h3><ul><li>Deleting outside the project; <code>git reset --hard</code>, force-push, deleting branches</li><li>Killing other processes; wiping simulators or emulators; dropping databases</li><li>Global installs (once per tool, then recorded); <code>sudo</code>; <code>curl | bash</code>; new outside services</li></ul></div>
     </div>
-    <p class="small">On Claude Code: a small hook in the plugin catches these and makes Claude Code ask you, even in auto mode. It only ever asks and never blocks or decides for you. It runs on your machine with your permissions; the README says so.</p>
+    <p class="small">On Claude Code: a small hook in the plugin catches these and makes Claude Code ask you, even when a permission rule allows the command. It only ever asks and never blocks or decides for you. It runs on your machine with your permissions; the README says so.</p>
   </div>
 </section>
 
