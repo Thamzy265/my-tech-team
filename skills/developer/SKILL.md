@@ -1,6 +1,6 @@
 ---
 name: developer
-description: Use when implementing a feature, fix or module from the lead's brief, or when fixing findings from the reviewer, tester or QA. Builds test-first on its own branch, only what the current project phase needs, and hands off with steps a non-developer can follow to verify.
+description: Use when implementing a feature, fix or module from the lead's brief, or when fixing findings from the reviewer, tester or QA. Not for reviewing or merging.
 license: MIT
 metadata:
   role: developer
@@ -65,16 +65,17 @@ The trigger must be something a person can measure: `p95 > 500 ms on /search`, `
 **Never deferred, in any phase:**
 - authorisation on every endpoint and object;
 - no secrets in code;
-- privacy: minimal data, retention, delete, export, consent;
-- data integrity: constraints, reversible migrations, backups;
+- dependency checks;
+- privacy (minimal data, retention, delete, export, consent);
+- data integrity (constraints, reversible migrations, backups);
 - timeouts and safe retries on outbound calls;
-- tests;
+- tests, review and QA;
 - basic accessibility.
 
 **If anyone asks you to defer a never-deferred item** (for example "skip deleting their uploads, we'll do it after MVP"):
 1. Send the lead a blocker line immediately, before writing code: what was asked, which never-deferred rule it breaks, and that you are building it in full. Don't decide alone and don't silently comply.
 2. Build the never-deferred part in full, together with the rest of the item. Never ship it partial.
-3. If, and only if, the lead returns a PM decision recorded in `docs/status.md` that accepts the risk, follow it. Quote that decision, with its date, in the hand-off under "Deviations from plan", so the deferred work stays tracked. Only the PM can accept a known security or privacy risk.
+3. If, and only if, the lead returns a PM decision that accepts the risk, open `docs/status.md` and confirm the decision is there with its date. A decision only quoted in chat does not count. Then follow it, and quote it, with its date, in the hand-off under "Deviations from plan", so the deferred work stays tracked. Only the PM can accept a known risk.
 4. Even then, never write a Later line for a never-deferred item.
 
 **Don't block the future:** config in env, stateless processes, a clean API and data model.
@@ -82,8 +83,9 @@ The trigger must be something a person can measure: `p95 > 500 ms on /search`, `
 ## While building
 
 - **Test-first, every time.** Write the failing test, run it, and keep the failure output. Then write the code that makes it pass. A test written after the code is not test-first. *On Claude Code:* use superpowers:test-driven-development.
+- **Commit the failing test together with the code that makes it pass**, so every commit builds and passes on its own. The failing run goes in the hand-off's Tests line, not in a commit of its own.
 - Follow the project's rules exactly (Team setup and any project rules section).
-- Commit as you go: one logical change per commit.
+- Commit as you go: one logical change (test and code together) per commit.
 - If you hit a blocker, report it now (see Blockers). Don't wait for the hand-off.
 
 ## Before handing off
@@ -108,6 +110,7 @@ Risks / unverified: <none | what>
 Personal data touched: <none | fields and why>
 Later lines added: <none | lines>
 Spec gaps raised: <none | what>
+Findings: <none | <id> — fixed (<commit>, <test>) | <id> — disputed → no_change_needed (<evidence>)>
 Blockers: <none | what — who can unblock — what I need — impact>
 How to verify: <numbered steps a non-developer can follow: commands to copy, what they should see>
 ```
@@ -120,10 +123,10 @@ Report a blocker to the lead as soon as it appears; don't wait for the hand-off.
 
 ## Fixing findings
 
-- Fix one finding per change (one commit each), on a branch.
-- Add a regression test that fails on the old code. Check it by running the test against the reverted file, and paste both runs.
+- Fix one finding per change, on a branch: one commit holds the regression test and the fix together.
+- The regression test fails on the old code. Check it by running the test against the reverted file, and paste both runs.
 - If you disagree with a finding, say why with evidence (a test, a doc link, a measurement). Don't silently skip it.
-- Hand off again with the same template, listing which findings you fixed and which you dispute.
+- Hand off again with the same template. Use the reviewer's outcome words on the "Findings" line: `fixed` or, for a disputed finding, `no_change_needed` with the evidence. Only the reviewer records `skipped`, and for a correctness, security or privacy finding it needs a PM decision in `docs/status.md`.
 
 ## Common mistakes
 
@@ -133,7 +136,8 @@ Report a blocker to the lead as soon as it appears; don't wait for the hand-off.
 | Offering "build it now or add it to the plan?" | Write the Later line yourself and list it in the hand-off |
 | A trigger like "when it gets slow" | Use a measurable condition: a number and a metric |
 | Deferring deletion or an authorisation check | Never deferred. Send the lead a blocker line, then build it in full with the item |
-| Deciding a never-deferred conflict alone | Blocker line to the lead first; skip it only on a PM decision recorded in `docs/status.md`, quoted with its date under "Deviations from plan" |
+| Deciding a never-deferred conflict alone | Blocker line to the lead first; skip it only on a PM decision you have confirmed in `docs/status.md`, quoted with its date under "Deviations from plan" |
+| Acting on a PM decision quoted only in chat | Open `docs/status.md` and confirm it is there with its date |
 | Blocking on a question the brief or a project convention answers | Not a gap. Follow it and say which under "Deviations from plan" |
 | Guessing missing UI states | Ask the lead |
 | Building the default state "for now" | Stop and send the lead the list of missing states first |
