@@ -1,3 +1,5 @@
+Example copied from a test run. Paths refer to the project layout; this folder holds 3 of the 11 screenshots and the spec.
+
 # QA — notes-states
 
 Date: 2026-10-13 — Environment: macOS 27.0.1, Playwright 1.63.0 headless Chromium (chromium-1243), Node 22.12.0, commit e9664a6, page opened as file://.../static/states.html (static page, no server needed; app.py does not serve it)

@@ -53,6 +53,6 @@ A tool on this list is not asked again, but an upgrade, a different browser or a
 
 ## The Claude Code guard hook
 
-- *On Claude Code:* the plugin ships a `PreToolUse` hook for Bash (`hooks/hooks.json`, `hooks/guard.sh`). It matches the common "ask first" commands (for example `rm -rf` outside the project, `git reset --hard`, force-push, `simctl erase`, `npx playwright install`, `brew install`, `curl … | bash`, `sudo`) and makes Claude Code ask the PM, even in auto mode.
+- *On Claude Code:* the plugin ships a `PreToolUse` hook for Bash (`hooks/hooks.json`, `hooks/guard.sh`). It matches the common "ask first" commands (for example `rm -rf` outside the project, `git reset --hard`, force-push, `simctl erase`, `npx playwright install`, `brew install`, `curl … | bash`, `sudo`) and makes Claude Code ask the PM, also when a permission rule allows the command (tested), and in auto mode per the Claude Code docs (v2.1.211+).
 - It only ever asks; it never blocks or allows on its own. If it errors, Claude Code's normal permissions still apply.
 - **It is a backstop, not the rule.** It can't see every command shape, and other tools (Codex, Gemini, Copilot, Cursor) don't load it. The written rules above always apply: ask first, whether or not the hook fires.

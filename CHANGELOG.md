@@ -18,6 +18,7 @@ All notable changes to this project are recorded here. The format follows Keep a
 
 - The PM update format.
 - The plan slide of the deck template.
+- The guard reads only the command, not its description.
 
 ### Known gaps
 

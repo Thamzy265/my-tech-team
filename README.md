@@ -64,7 +64,7 @@ You check only the items that need you. The team does the other checks.
 
 ## Safety hook
 
-This plugin contains a hook. The hook runs on your computer with your permissions. Before risky Bash commands, it makes Claude Code ask you. It never stops or allows a command by itself. Other tools do not load it.
+This plugin contains a hook. The hook runs on your computer with your permissions. Before risky Bash commands, it makes Claude Code ask you. It never stops or allows a command by itself. In a session that cannot ask you (for example `claude -p` or CI), a command that needs your answer does not run. Other tools do not load it.
 
 The hook asks about these commands:
 

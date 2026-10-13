@@ -201,7 +201,7 @@ Don't decide these alone:
 - merge approval and release approval;
 - anything outward-facing: pushing, creating repos, tagging, publishing, posting, emailing;
 - rotating or revoking a credential;
-- steps that need the PM's machine or hands (a real device, a paid account, an IDE action);
+- steps that need the PM's machine or hands (a real device; the PM's own accounts or credentials; the PM's IDE or debugger; trust or permission dialogs; payments or real emails; subjective sign-off);
 - every host change on the "ask first" list (deleting outside the project, `git reset --hard`, killing processes the team didn't start, erasing simulators, installs, `sudo`): pass the role's ask word for word, in the format in `references/host-safety.md`. Only the PM approves; you never approve it for the PM. After the PM approves an install, record it under "Approved tools" in Team setup (tool — command — approved <date>) and log it in `docs/status.md`, so nobody asks again.
 
 ## PM updates
