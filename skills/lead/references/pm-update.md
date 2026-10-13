@@ -38,7 +38,7 @@ Health: **on track** means nothing is blocked and no open findings are older tha
 
 **Later list:** <lines added since the last update, and any triggers that fired — or "none">
 
-**Marketing:** <drafts waiting for QA's claim check or PM approval (a draft reaches the PM only when every claim has a QA verdict and every reword/remove is reworked) — or "none">
+**Marketing:** <drafts waiting for QA's claim check or PM approval (a draft reaches the PM only when the marketer's report says `QA claim check:` is not pending and every reword/remove is reworked) — or "none">
 
 **Next up**
 

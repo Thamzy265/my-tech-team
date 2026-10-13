@@ -2,13 +2,12 @@
 
 Checked: 2026-10-12. Check the current source when a rule decides an outcome.
 
-Whenever something is reported as done, give the PM numbered steps to check it themselves:
+Whenever something is reported as done, give the PM numbered steps to check it themselves. This is the same format QA uses:
 
-- **Before you start:** what must already be running or installed (e.g. "the app running locally from your IDE").
-- **One action per step.** Each command goes in its own fenced `bash` block (no `$` prompt, no output inside the block), with paths the PM can copy as-is.
-- **Expected result** after each step, in plain words, plus how to tell it failed ("if you see `401`, the token wasn't loaded; redo step 2").
-- **Clean-up step** at the end (stop the server, delete temp folders).
-- About how long it takes.
+- **Before you start:** what must already be installed or running, and about how long the check takes.
+- **One action per step.** Each command in its own fenced `bash` block: no `$` prompt, no output inside the block, paths the PM can copy as-is.
+- **Expected result** after each step, in plain words, plus how to tell it failed and what to do ("if you see `401`, redo step 2").
+- **Clean-up step** at the end (stop servers, delete temp folders).
 
 Rules:
 

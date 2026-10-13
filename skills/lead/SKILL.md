@@ -85,8 +85,8 @@ Do this before the developer brief. Load each reference when its trigger applies
    The developer works test-first and commits each test with the code it drives; the failing run goes in the hand-off. Don't ask for test-only commits from the developer.
 4. **Brief the tester** (`tester`) on the same branch once the developer hands off. Link the design note's abuse cases and the UI states matrix.
 5. **Brief the reviewer** (`reviewer`) in `Mode: branch`. The developer fixes findings; the reviewer re-checks until the verdict is approve or approve with notes. A Block stays a Block until it is fixed or the PM accepts the risk.
-   - **Medium security finding:** the reviewer approves it only with a dated plan task. You add that task to the plan (finding id, owner, due date) and tell the reviewer the task line.
-   - **A correctness, security or privacy finding marked `skipped`** needs a PM decision recorded in the status log. You never decide a skip yourself; take it to the PM.
+   - **Medium security finding:** the reviewer approves it with notes only with a dated plan task. You add that task to `docs/PLAN.md` (finding id, owner, due date) and tell the reviewer the task line.
+   - **A correctness, security or privacy finding marked `skipped`** needs a PM decision recorded in `docs/status.md`. You never decide a skip yourself; take it to the PM.
 6. **Brief QA** (`qa`) with the acceptance criteria and the developer's "How to verify" draft. QA runs the real flow, the accessibility and privacy checks that apply, and the PM check steps.
 7. **Ask the PM to approve the merge** once every gate has passed. Give the evidence: tester result, reviewer verdict, QA result, check steps. Don't merge before the PM says yes.
 8. **Close:** merge (a pull request if a remote exists, otherwise a local `git merge --no-ff`). Then tick the box in the plan, update the project's status section if CLAUDE.md or AGENTS.md has one, write the status log entry and report to the PM.
@@ -99,9 +99,9 @@ Do this before the developer brief. Load each reference when its trigger applies
 
 ### Recording PM risk decisions
 
-Only the PM accepts a risk. The developer and the reviewer open the status log to confirm a decision before they act on it, so:
+Only the PM can accept a known risk. Before acting on a PM risk decision, the developer and the reviewer open `docs/status.md` and confirm the decision is there with its date; a decision only quoted in chat does not count. So:
 
-- Record the decision **word for word**, dated, as soon as the PM makes it:
+- Record the decision **word for word**, dated, in `docs/status.md` as soon as the PM makes it (what is accepted, scope, date, review date if any):
   `Risk accepted by PM (<YYYY-MM-DD>): accepted: <what risk> — scope: <item, branch, finding ids or gate> — expiry/review: <date, or none> — PM said: "<exact words>"`
 - Never paraphrase, summarise or widen it. Never write or announce a decision the PM hasn't made, not even "the PM will probably accept".
 - Quote the log entry (with its date) when you pass the decision to a role.
@@ -133,8 +133,8 @@ gate, and I'll record your decision with today's date in docs/status.md.
 2. Fixes follow the normal work loop, on new branches. Mark the feature done only after the feature review passes.
 3. Write release notes, a version tag proposal and a rollback plan (what to revert, data steps, how to confirm the rollback worked).
 4. The PM approves the release. Tag only with the PM's approval at the time.
-5. Brief the `marketer` for launch comms, with the QA evidence and the release notes. Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to `qa` for the claim check; QA fills the verdict cells and keeps its evidence in `docs/qa/`.
-6. Forward a marketing draft to the PM **only when every claim has a QA verdict** and every `reword` or `remove` has been reworked (and re-checked by QA). The PM approves and publishes; the team never publishes.
+5. Brief the `marketer` for launch comms once QA's report for the release exists, with the QA evidence and the release notes, and confirm the release to the marketer. Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to `qa` for the claim check; QA fills each "QA verdict" cell as `<verified|reword|remove> — docs/qa/<file>.md#claim-check` and keeps its evidence in `docs/qa/`.
+6. Forward a marketing draft to the PM **only when the marketer's report says `QA claim check:` is not pending** and every `reword` or `remove` has been reworked (and re-checked by QA). Log the marketer's report in `docs/status.md` like every other role's. The PM approves and publishes; the team never publishes.
 
 ## Maintain
 
@@ -169,7 +169,7 @@ gate, and I'll record your decision with today's date in docs/status.md.
 Every deferral is one line in the plan's Later section:
 
 ```markdown
-- <what was deferred> — <why> — trigger: <measurable condition> — noted <date> by <role>
+- <what> — <why> — trigger: <measurable condition> — noted <date> by <role>
 ```
 
 - **No trigger, no line.** A trigger is a number and a metric (`p95 > 500 ms on /search`, `> 1,000 daily users`). "Later", "if needed" and "when it gets slow" are not triggers. A deferral without a trigger is not allowed in.
