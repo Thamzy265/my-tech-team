@@ -35,7 +35,15 @@ Rule of thumb: design for about 10x current load, not 1000x.
 ## Rules for the lead
 
 - Follow the project phase. Anything the phase doesn't need becomes a Later line with a measurable trigger, listed in the design note and added to the plan's Later section.
-- Never defer the never-deferred items (authorisation, secrets, privacy, data integrity, timeouts and retries, tests and review, basic accessibility). Design them in now.
+- Never defer these, in any phase; design them in now:
+  - authorisation on every endpoint and object;
+  - no secrets in code;
+  - dependency checks;
+  - privacy (minimal data, retention, delete, export, consent);
+  - data integrity (constraints, reversible migrations, backups);
+  - timeouts and safe retries on outbound calls;
+  - tests, review and QA;
+  - basic accessibility.
 - Leave every PM decision open in the note, with options and a recommendation.
 - Spend real design effort only on decisions that are expensive to undo. Those get an ADR.
 

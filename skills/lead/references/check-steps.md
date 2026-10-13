@@ -15,4 +15,4 @@ Rules:
 - QA (or you) must have **run the exact steps** first and seen the expected results. Never hand over untested steps.
 - Steps check behaviour the PM cares about (a page appears, a booking is saved, an email arrives), not internals.
 - If a step needs something the PM doesn't have yet, say so up front instead of letting it fail halfway.
-- Keep them in `docs/qa/<milestone>.md` under "PM check" so they can be rerun later.
+- QA writes them in `docs/qa/<milestone>.md` under a `PM check` heading, so they can be rerun later. The lead copies them from there into the PM update's "How you can check it", unchanged.

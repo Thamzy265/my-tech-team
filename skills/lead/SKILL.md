@@ -85,6 +85,8 @@ Do this before the developer brief. Load each reference when its trigger applies
    The developer works test-first and commits each test with the code it drives; the failing run goes in the hand-off. Don't ask for test-only commits from the developer.
 4. **Brief the tester** (`tester`) on the same branch once the developer hands off. Link the design note's abuse cases and the UI states matrix.
 5. **Brief the reviewer** (`reviewer`) in `Mode: branch`. The developer fixes findings; the reviewer re-checks until the verdict is approve or approve with notes. A Block stays a Block until it is fixed or the PM accepts the risk.
+   - **Medium security finding:** the reviewer approves it only with a dated plan task. You add that task to the plan (finding id, owner, due date) and tell the reviewer the task line.
+   - **A correctness, security or privacy finding marked `skipped`** needs a PM decision recorded in the status log. You never decide a skip yourself; take it to the PM.
 6. **Brief QA** (`qa`) with the acceptance criteria and the developer's "How to verify" draft. QA runs the real flow, the accessibility and privacy checks that apply, and the PM check steps.
 7. **Ask the PM to approve the merge** once every gate has passed. Give the evidence: tester result, reviewer verdict, QA result, check steps. Don't merge before the PM says yes.
 8. **Close:** merge (a pull request if a remote exists, otherwise a local `git merge --no-ff`). Then tick the box in the plan, update the project's status section if CLAUDE.md or AGENTS.md has one, write the status log entry and report to the PM.
@@ -95,14 +97,22 @@ Do this before the developer brief. Load each reference when its trigger applies
 - Collect every role's blockers at each hand-off. A blocker only the PM can clear also goes under "Needs you".
 - *On Claude Code:* dispatch each role as a subagent told to use its skill (`/my-tech-team:<role>` when installed as a plugin, for example `/my-tech-team:developer`). Give it the brief and the files to read; never do the role's work in your own context.
 
+### Recording PM risk decisions
+
+Only the PM accepts a risk. The developer and the reviewer open the status log to confirm a decision before they act on it, so:
+
+- Record the decision **word for word**, dated, as soon as the PM makes it:
+  `Risk accepted by PM (<YYYY-MM-DD>): accepted: <what risk> — scope: <item, branch, finding ids or gate> — expiry/review: <date, or none> — PM said: "<exact words>"`
+- Never paraphrase, summarise or widen it. Never write or announce a decision the PM hasn't made, not even "the PM will probably accept".
+- Quote the log entry (with its date) when you pass the decision to a role.
+
 ### When the PM asks to skip a gate
 
 Skipping a gate is a risk acceptance, and only the PM can make it. Don't present it as an easy option or a shortcut.
 
 1. Keep the gate and say why in one line (what it catches for this item).
 2. If the PM still insists, name exactly what is skipped and the risk the PM accepts.
-3. Record the PM's decision, dated, in the status log, quoting the PM:
-   `Risk accepted by PM (<date>): <item> — skipped: <gate> — risk: <what could go wrong> — PM said: "<quote>"`
+3. Record the PM's decision word for word, dated, in the status log, in the "Recording PM risk decisions" format. The scope names the gate that is skipped.
 4. Run every other gate as normal, and still ask the PM to approve the merge.
 
 Worked example. The PM says: "It's a one-line change to the invoice due-date label. Skip tester and reviewer, just merge it when the developer's done."
@@ -123,7 +133,8 @@ gate, and I'll record your decision with today's date in docs/status.md.
 2. Fixes follow the normal work loop, on new branches. Mark the feature done only after the feature review passes.
 3. Write release notes, a version tag proposal and a rollback plan (what to revert, data steps, how to confirm the rollback worked).
 4. The PM approves the release. Tag only with the PM's approval at the time.
-5. Brief the `marketer` for launch comms, with the QA evidence and the release notes. QA does the claim check. The PM approves and publishes; the team never publishes.
+5. Brief the `marketer` for launch comms, with the QA evidence and the release notes. Send the draft and its claims table (`Claim | Source/evidence | QA verdict`) to `qa` for the claim check; QA fills the verdict cells and keeps its evidence in `docs/qa/`.
+6. Forward a marketing draft to the PM **only when every claim has a QA verdict** and every `reword` or `remove` has been reworked (and re-checked by QA). The PM approves and publishes; the team never publishes.
 
 ## Maintain
 
@@ -144,9 +155,11 @@ gate, and I'll record your decision with today's date in docs/status.md.
 - nice-to-have features, settings and integrations.
 
 **Never deferred, in any phase:**
-- security basics: authorisation on every endpoint and object, no secrets in code, dependency checks;
-- privacy: data minimisation, retention, delete and export, consent;
-- data integrity: constraints, reversible migrations, backups;
+- authorisation on every endpoint and object;
+- no secrets in code;
+- dependency checks;
+- privacy (minimal data, retention, delete, export, consent);
+- data integrity (constraints, reversible migrations, backups);
 - timeouts and safe retries on outbound calls;
 - tests, review and QA;
 - basic accessibility.
@@ -165,7 +178,7 @@ Every deferral is one line in the plan's Later section:
 
 ## Status log
 
-After every role hand-off, every PM decision and every PM update, add a dated entry at the top of the status log:
+Log **every role's report** (developer, tester, reviewer, QA and marketer), every PM decision and every PM update: add a dated entry at the top of the status log:
 
 ```markdown
 ## <YYYY-MM-DD> — <item> — <stage or event>
@@ -190,7 +203,7 @@ Don't decide these alone:
 
 ## PM updates
 
-Use `references/pm-update.md` for every update, and `references/check-steps.md` for every finished task. The format is fixed: every line, every role in the blockers table, "none" where empty. Plain language, no jargon.
+Use `references/pm-update.md` for every update, and `references/check-steps.md` for every finished task. QA writes the check steps in `docs/qa/<milestone>.md` under a `PM check` heading; copy them from there into "How you can check it". The format is fixed: every line, every role in the blockers table, "none" where empty. Plain language, no jargon.
 
 ## Blockers
 

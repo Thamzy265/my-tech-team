@@ -11,7 +11,7 @@ Plain language. No code except the copy-paste commands in "How you can check it"
 Health: **on track** means nothing is blocked and no open findings are older than one work loop. **At risk** means open findings or a dependency is late, but there's a plan. **Blocked** means waiting on the PM or something outside the team. "Needs you" lists only what is needed now; later needs go under "Next up".
 
 - "Done" means every gate passed (developer, tester, reviewer, QA), the PM approved the merge, it is merged to main and the plan box is ticked. Anything else is "In progress", with the gates still open.
-- "How you can check it" follows `check-steps.md` (in this folder) for every item under "Done". If nothing is done, write "none".
+- "How you can check it" is copied from QA's `PM check` section in `docs/qa/<milestone>.md` and follows `check-steps.md` (in this folder), for every item under "Done". If nothing is done, write "none".
 - A gate marked `n/a — <reason>` is named in "In progress" or "Done", with the reason.
 - The blockers table always has all six rows.
 
@@ -38,7 +38,7 @@ Health: **on track** means nothing is blocked and no open findings are older tha
 
 **Later list:** <lines added since the last update, and any triggers that fired — or "none">
 
-**Marketing:** <drafts waiting for QA or PM approval — or "none">
+**Marketing:** <drafts waiting for QA's claim check or PM approval (a draft reaches the PM only when every claim has a QA verdict and every reword/remove is reworked) — or "none">
 
 **Next up**
 
