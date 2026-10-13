@@ -44,6 +44,28 @@ Read the project's CLAUDE.md or AGENTS.md first, especially its "Team setup" sec
 
 For any endpoint or handler, always cover at least: a wrong method (e.g. POST to a GET route), an unknown path, path variants (trailing slash, case, query string), and malformed or missing input. Check each one returns the status and error shape the spec defines.
 
+## End-to-end tests
+
+Unit and structural tests don't prove a user can click through a flow. For anything a user drives (a page, a screen, a CLI flow), end-to-end tests are part of your result, not an extra.
+
+1. **For each new user flow, and each states-matrix row that can be automated, add an end-to-end test** in the project's tool: Playwright (web), Maestro (mobile) or Flutter `integration_test`, unless Team setup names another. Load `references/e2e.md` for the structure and where the files go.
+2. **Each new e2e test is seen to fail first,** on the old code or with the feature removed, then pass on the new code, exactly as in Rules. Show both runs.
+3. **Query by role or label** (`getByRole('button', { name: 'Send invoice: #1042' })`), or by `Semantics` identifier on Flutter (`id:` in Maestro). Never by CSS class or layout position. If a control has no name, role, label or identifier, or several controls share one name, that is a test-hook bug for the developer: report it, don't work around it.
+4. **If the tool isn't installed, write the tests anyway,** complete and ready to run, and commit them. Then ask the PM once to install it (Host safety), through the lead, with the exact command, the download size, where it goes on disk and how to remove it. Mark their runs `pending install` in the report. After a yes, run them (fail-then-pass) and tell the lead to record the tool under "Approved tools" in Team setup, with the command and date, so nobody asks again.
+5. **If the project's rules forbid extra packages** (for example "no third-party packages"), don't decide alone and don't fall back silently to weaker tests. A dev-only test tool that never ships in the app is still the PM's decision: raise it as a blocker (what the rule says, the tool, that it stays out of the app, what is untested without it). Keep the specs written, and list the unrun flows under "Gaps not covered".
+6. **Commit the e2e tests** as `test(<scope>): <summary>`, like every other test.
+
+Example ask (an invoice list in a Python web app, browser not installed):
+
+```markdown
+Needs PM approval (install, asked once):
+- Command: playwright install chromium   (run inside the project's venv)
+- Why: run the 4 new end-to-end tests in e2e/test_invoices.py (send, filter, empty list, failed load).
+- What it changes: downloads Chromium, about 281 MB, into ~/Library/Caches/ms-playwright.
+- How to undo: delete that folder.
+After a yes I run the tests and ask the lead to record Playwright under "Approved tools".
+```
+
 ## Rules
 
 - Use the project's test layout and its fakes or recorded fixtures. No real devices, accounts or network unless the project's rules allow them.
@@ -81,6 +103,7 @@ Use this template exactly. Fill every line; write "none" rather than leaving a l
 ```markdown
 Branch: <name> (<n> test commits)
 Added: <n> tests in <files>
+E2E tests added: <n> (<tool>) in <files> — run: <fail-then-pass shown | pending install — asked PM <date> | n/a — no user flow>
 Fail-then-pass: <per test: name — failure line on old code (<commit>) — passes on new code>
 Regression locks: <none | test — behaviour locked — why it could break>
 Bugs found: <none | <id> <one line> — repro: <test name> (fails today)>
@@ -99,6 +122,11 @@ Write `n/a — <reason>` for "Abuse cases covered" or "UI states covered" when t
 | Mistake | Fix |
 |---|---|
 | Probing manually and reporting "no defects" | Turn every probe into a committed test |
+| No e2e tests for a new user flow | Write them in the project's tool; unit tests don't cover clicking through |
+| Skipping e2e tests because the tool isn't installed | Write and commit them anyway; ask once to install, with command, size and location |
+| Silently swapping in weaker tests because of a "no packages" rule | A dev-only test tool is a PM decision; raise it as a blocker |
+| Installing a browser or tool without asking | Ask the PM once; after a yes, tell the lead to record it under "Approved tools" |
+| Selecting elements by CSS class or position | Use role, label or `Semantics` identifier; missing hooks are a bug for the developer |
 | Repeating the developer's "tests pass" | Add your own failure-path tests |
 | Only happy-path tests | Wrong method, unknown path, malformed input, missing auth |
 | A new test with no failing run | Run it against the old code and paste the failure |
