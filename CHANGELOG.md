@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here. The format follows Keep a Changelog, and versions follow Semantic Versioning.
 
+## [0.2.1] - 2026-10-13
+
+### Fixed
+
+- The guard now asks before more risky commands: discarding uncommitted work with `git restore`, `git checkout -- .` or `git stash drop`; `find -delete` outside the project; system-wide installs with pip, bun, cargo, go, gem, uv tool or pipx; `doas` and path-qualified `sudo`; and `kill -s KILL`.
+- The lead briefs the marketer only after the PM's release approval is recorded in `docs/status.md`. The marketer checks for that line before it starts.
+
+### Tested
+
+- The lead's full release chain was run end to end in a real Claude Code session.
+
+### Known gaps
+
+- Installs on Codex, Gemini CLI, GitHub Copilot and Cursor are format-validated but not run.
+- Maestro was not run for real. The guard is a backstop, not a guarantee.
+
 ## [0.2.0] - 2026-10-13
 
 ### Added

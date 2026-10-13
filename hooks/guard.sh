@@ -26,6 +26,14 @@ if has "${W}rm[[:space:]]+(-[^[:space:]]+[[:space:]]+)*(-[A-Za-z]*[rR][A-Za-z]*|
   reason="recursive delete outside the project"
 elif has "${W}git[[:space:]]+reset[[:space:]][^|;&]*--hard"; then
   reason="git reset --hard discards uncommitted work"
+elif has "${W}git[[:space:]]+stash[[:space:]]+(drop|clear)" \
+  || has "${W}git[[:space:]]+checkout[^|;&]*[[:space:]](--([[:space:]]|\$)|\\.([[:space:]\";&|]|\$))" \
+  || { has "${W}git[[:space:]]+restore([[:space:]]|\$)" \
+    && { has "${W}git[[:space:]]+restore[^|;&]*[[:space:]](--worktree|-W)" \
+      || ! has "${W}git[[:space:]]+restore[^|;&]*[[:space:]](--staged|-S)"; }; }; then
+  reason="discards uncommitted work"
+elif printf '%s' "$notmp" | grep -Eq -- "${W}find[[:space:]]+(\\\\\"|')?(/|~|\\\$\\{?HOME|\\.\\.(/|[[:space:]\\'\"]|\$))([^|;&]*[[:space:]])?(-delete|-exec(dir)?[[:space:]]+rm[[:space:]])"; then
+  reason="deletes files outside the project"
 elif has "${W}git[[:space:]]+clean[[:space:]]+-[A-Za-z]*f"; then
   reason="git clean deletes untracked files"
 elif has "${W}git[[:space:]]+push[^|;&]*[[:space:]](-f|--force|--force-with-lease)([^A-Za-z-]|$)" \
@@ -37,15 +45,15 @@ elif has "${W}git[[:space:]]+(branch[[:space:]]+(-d|-D|--delete)|tag[[:space:]]+
   reason="deletes a branch or tag"
 elif has "${W}git[[:space:]]+config[[:space:]]+--global"; then
   reason="changes global git config"
-elif has "${W}(pkill|killall)[[:space:]]" || has "${W}kill[[:space:]]+-(9|KILL)" || has "xargs[[:space:]]+kill"; then
+elif has "${W}(pkill|killall)[[:space:]]" || has "${W}kill[[:space:]]+(-s[[:space:]]+|-n[[:space:]]+|-)(SIG)?(9|KILL)([^A-Za-z0-9]|$)" || has "xargs[[:space:]]+kill"; then
   reason="kills processes that may not belong to this task"
 elif has "simctl[[:space:]]+(erase|delete)" || has "(-wipe-data|emulator[^|;&]*-wipe)" \
   || has "${W}adb[[:space:]][^|;&]*(uninstall|pm[[:space:]]+clear)"; then
   reason="erases a simulator, emulator or app data"
 elif hasi "(psql|mysql|mariadb|sqlite3|duckdb|sqlcmd|mongosh)[^|;&]*(drop|truncate)[[:space:]]+(database|schema|table)"; then
   reason="drops or truncates database data"
-elif has "${W}sudo[[:space:]]"; then
-  reason="runs a command as administrator (sudo)"
+elif has "${W}(/[^[:space:]\"']*/)?(sudo|doas)[[:space:]]"; then
+  reason="runs a command as administrator (sudo or doas)"
 elif has "(curl|wget)[^|]*\\|[[:space:]]*(sudo[[:space:]]+)?(ba|z|da)?sh([^A-Za-z]|$)"; then
   reason="pipes a download into a shell"
 elif has "${W}brew[[:space:]]+(install|uninstall|reinstall|upgrade|tap)" \
@@ -53,6 +61,12 @@ elif has "${W}brew[[:space:]]+(install|uninstall|reinstall|upgrade|tap)" \
   || has "playwright[[:space:]]+install" || has "get\\.maestro\\.mobile\\.dev" \
   || has "${W}flutter[[:space:]]+upgrade" || has "${W}sdkmanager[[:space:]]"; then
   reason="installs or upgrades software on this machine"
+elif { has "${W}(pip3?|python3?[[:space:]]+-m[[:space:]]+pip)[[:space:]]+install" \
+    && ! has "${W}uv[[:space:]]+pip[[:space:]]+install"; } \
+  || has "${W}bun[[:space:]][^|;&]*(-g|--global)([^A-Za-z-]|$)" \
+  || has "${W}(cargo|go|gem|pipx)[[:space:]]+install([[:space:]]|$)" \
+  || has "${W}uv[[:space:]]+tool[[:space:]]+install"; then
+  reason="installs software system-wide"
 elif has ">>?[[:space:]]*(\\\\\")?(~|\\\$\\{?HOME\\}?)/\\.(zshrc|bashrc|bash_profile|profile|zprofile|claude/)" \
   || has "${W}defaults[[:space:]]+write" || has "${W}(chsh|launchctl)[[:space:]]"; then
   reason="changes shell, system or Claude Code settings"
