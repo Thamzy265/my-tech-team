@@ -1,0 +1,15 @@
+{
+  "name": "my-tech-team",
+  "description": "Marketplace for the my-tech-team plugin.",
+  "owner": { "name": "Thamzy265", "url": "https://github.com/Thamzy265" },
+  "plugins": [
+    {
+      "name": "my-tech-team",
+      "source": "./",
+      "description": "Team-role skills for AI coding agents: lead, developer, tester, reviewer, QA and marketer.",
+      "version": "0.1.0",
+      "category": "development",
+      "tags": ["team", "workflow", "review", "qa", "security", "privacy"]
+    }
+  ]
+}
