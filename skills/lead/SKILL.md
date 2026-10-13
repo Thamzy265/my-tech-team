@@ -199,6 +199,7 @@ Don't decide these alone:
 - phase changes;
 - merge approval and release approval;
 - anything outward-facing: pushing, creating repos, tagging, publishing, posting, emailing;
+- rotating or revoking a credential;
 - steps that need the PM's machine or hands (a real device, a paid account, an IDE action).
 
 ## PM updates
