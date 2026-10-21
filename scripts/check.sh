@@ -8,10 +8,14 @@ SKILLS_REF="git+https://github.com/agentskills/agentskills@69ef37e9424c0a7ea9dd2
 echo "== unit tests"
 python3 -m unittest discover -s tests -p 'test_lint*.py'
 python3 -m unittest discover -s tests -p 'test_guard*.py'
+python3 -m unittest discover -s tests -p 'test_lint_agents*.py'
 sh -n hooks/guard.sh
 
 echo "== lint_skills"
 python3 scripts/lint_skills.py skills
+
+echo "== lint_agents"
+python3 scripts/lint_agents.py agents
 
 echo "== skills-ref validate"
 shopt -s nullglob
