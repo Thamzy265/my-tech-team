@@ -49,6 +49,26 @@ The plugin adds about 500 tokens to each session. Each skill loads its full text
 
 Add a "Team setup" section to the `CLAUDE.md` or `AGENTS.md` file of your project. Write the check command, the run command, the project phase and the project rules. If you do not write a value, the skills use the default values. The default values are in the design document: [docs/superpowers/specs/2026-10-12-my-tech-team-design.md](docs/superpowers/specs/2026-10-12-my-tech-team-design.md).
 
+## Models and agents (Claude Code)
+
+On Claude Code, the plugin has one agent for each role. Each agent has a model, an effort level and a set of tools that agree with its work:
+
+| Role | Model | Effort | Tools |
+|---|---|---|---|
+| Lead | your session model | your setting | all |
+| Developer, tester, QA | Sonnet | medium | all |
+| Reviewer | Opus | high | read, shell and skills. It cannot edit files |
+| Marketer | Sonnet | medium | files and web. It has no shell |
+| Scout (lookups for the lead) | Haiku | low | read and search |
+
+The lead sends each role to its agent. When a role fails a review, test or QA round, the lead increases the effort. When the role fails again, the lead uses Opus. When the role is still not successful, the lead tells you.
+
+To change the model for a role in your project, add an "Agent models" line to Team setup. Example: `Agent models: developer: opus; reviewer: fable, xhigh`.
+
+The agents use the model names `sonnet`, `opus` and `haiku`. Claude Code changes these names to the newest models that your version knows. If your organisation limits models with `availableModels`, that limit applies to the agents too.
+
+Codex, Gemini CLI, GitHub Copilot and Cursor do not use the agents. They use the skills as before.
+
 ## Testing tools
 
 The team tests with automation tools. It uses Playwright for web products. It uses Maestro for mobile products.
