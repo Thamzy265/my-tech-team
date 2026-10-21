@@ -1,6 +1,6 @@
 ---
 name: scout
-description: Use only when the my-tech-team lead needs a quick lookup in the codebase - where something is defined, what calls it, which files touch a topic.
+description: Use only when the my-tech-team lead needs a quick lookup in the codebase - where something is defined, what calls it, which files touch a topic. Never for general work.
 model: haiku
 effort: low
 tools: Read, Grep, Glob, Bash
