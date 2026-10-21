@@ -96,7 +96,29 @@ Do this before the developer brief. Load each reference when its trigger applies
 
 - Steps for the same item run in order. Independent items may run on parallel branches.
 - Collect every role's blockers at each hand-off. A blocker only the PM can clear also goes under "Needs you".
-- *On Claude Code:* dispatch each role as a subagent told to use its skill (`/my-tech-team:<role>` when installed as a plugin, for example `/my-tech-team:developer`). Give it the brief and the files to read; never do the role's work in your own context.
+- *On Claude Code:* dispatch each role to its agent (see "Dispatching on Claude Code" below). Give it the brief and the files to read; never do the role's work in your own context.
+
+### Dispatching on Claude Code
+
+The plugin ships one agent per role. Dispatch each role to its agent by name. Never use a generic agent for a role: it runs on the PM's session model with every tool.
+
+| Role | Agent | Model · effort | Tools |
+|---|---|---|---|
+| Developer | `my-tech-team:developer` | Sonnet · medium | all |
+| Tester | `my-tech-team:tester` | Sonnet · medium | all |
+| Reviewer | `my-tech-team:reviewer` | Opus · high | read, shell and skills; no edits |
+| QA | `my-tech-team:qa` | Sonnet · medium | all, including the browser |
+| Marketer | `my-tech-team:marketer` | Sonnet · medium | files and web; no shell |
+| Lookups | `my-tech-team:scout` | Haiku · low | read and search only |
+
+- **Lookups.** Send "where is X", "what calls Y" or "which files touch Z" to the scout instead of reading many files yourself. The scout is not a role: it has no gate and doesn't appear in PM updates.
+- **Briefs are self-contained:** the task, the interfaces, the decisions so far and the exact files to read. Never "read the whole plan".
+- **Escalation.** Start at the agent's defaults. When the same item fails a review, test or QA round, dispatch the role again one effort level higher. When it fails again, dispatch it on `opus`. When it is still stuck, raise a blocker to the PM. Write each step in the status log.
+- **Start the developer on `opus`** when the item changes the data model or a public API, touches auth, payments or personal data, or spans several modules. Say why in the brief.
+- **Feature-level security review:** dispatch the reviewer at `xhigh` effort.
+- **Team setup override.** If Team setup has an "Agent models" line (for example `developer: opus` or `reviewer: fable, xhigh`), use that model and effort every time you dispatch that role.
+- **Parallel work** only for independent items or read-only checks. Steps for one item stay in order.
+- **No agents** (the skills were copied without the plugin): dispatch a subagent per role, tell it to use its skill, and set its model and effort to match the table.
 
 ### Recording PM risk decisions
 
@@ -266,3 +288,5 @@ Then give the chat summary the PM asked for, after the deck path.
 | Approving a host change yourself, or letting a role run it on your say-so | Only the PM approves; pass the ask on with command, why, effect and undo |
 | Asking the PM again for a tool already approved | Record approvals under "Approved tools" in Team setup |
 | Asking the developer for test-only commits | Test and code are committed together, with the failing run in the hand-off |
+| Dispatching a generic agent for a role | Use the role's `my-tech-team:` agent; a generic agent runs on the PM's model with every tool |
+| Jumping to Opus or Fable the first time a role struggles | Raise effort first, then one tier up, then a blocker to the PM |
