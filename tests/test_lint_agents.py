@@ -77,13 +77,13 @@ class LintAgentsTest(unittest.TestCase):
 
     def test_model_required_and_not_inherit(self):
         missing = ROLE.format(name="tester", tools="").replace("model: sonnet\n", "")
-        self.assertTrue(any("model" in e for e in self.errors({"tester": missing})))
+        self.assertTrue(any("model must be one of" in e for e in self.errors({"tester": missing})))
         inherit = ROLE.format(name="tester", tools="").replace("model: sonnet", "model: inherit")
-        self.assertTrue(any("model" in e for e in self.errors({"tester": inherit})))
+        self.assertTrue(any("model must be one of" in e for e in self.errors({"tester": inherit})))
 
     def test_effort_must_be_valid(self):
         bad = ROLE.format(name="qa", tools="").replace("effort: medium", "effort: extreme")
-        self.assertTrue(any("effort" in e for e in self.errors({"qa": bad})))
+        self.assertTrue(any("effort must be one of" in e for e in self.errors({"qa": bad})))
 
     def test_role_must_preload_its_skill(self):
         bad = ROLE.format(name="developer", tools="").replace("my-tech-team:developer", "my-tech-team:tester")
@@ -123,6 +123,67 @@ class LintAgentsTest(unittest.TestCase):
     def test_tools_as_yaml_list(self):
         listed = ROLE.format(name="reviewer", tools="tools:\n  - Read\n  - Bash\n  - Skill\n")
         self.assertEqual(self.errors({"reviewer": listed}), [])
+
+    def scout_with(self, tools_block):
+        return SCOUT.replace("tools: Read, Grep, Glob, Bash\n", tools_block)
+
+    def has(self, overrides, text):
+        errs = self.errors(overrides)
+        self.assertTrue(any(text in e for e in errs), errs)
+
+    def test_inline_tools_list_is_parsed(self):
+        self.has({"scout": self.scout_with("tools: [Read, Write]\n")}, "scout must not have Write")
+
+    def test_inline_skills_list_is_parsed(self):
+        text = ROLE.format(name="qa", tools="").replace("skills:\n  - my-tech-team:qa", "skills: [my-tech-team:qa]")
+        self.assertEqual(self.errors({"qa": text}), [])
+
+    def test_quoted_tool_items(self):
+        self.has({"scout": self.scout_with('tools: Read, "Write"\n')}, "scout must not have Write")
+
+    def test_column0_yaml_list(self):
+        self.has({"scout": self.scout_with("tools:\n- Read\n- Write\n")}, "scout must not have Write")
+
+    def test_trailing_comment_does_not_hide_tools(self):
+        self.has({"scout": self.scout_with("tools: Read, Write # todo\n")}, "scout must not have Write")
+
+    def test_scoped_bash_counts_as_bash(self):
+        bad = ROLE.format(name="marketer", tools="tools: Read, Skill, Bash(git log:*)\n")
+        self.has({"marketer": bad}, "marketer must not have Bash")
+
+    def test_scoped_write_counts_as_write(self):
+        self.has({"scout": self.scout_with("tools: Read, Write(src/**)\n")}, "scout must not have Write")
+
+    def test_unparseable_line_is_error(self):
+        bad = SCOUT.replace("effort: low\n", "effort: low\nthis is not yaml\n")
+        self.has({"scout": bad}, "cannot parse line")
+
+    def test_qa_must_not_set_tools(self):
+        bad = ROLE.format(name="qa", tools="tools: Read, Bash\n")
+        self.has({"qa": bad}, "qa must not set tools")
+
+    def test_scout_must_not_set_skills(self):
+        bad = SCOUT.replace("---\n\nBody.", "skills:\n  - my-tech-team:qa\n---\n\nBody.")
+        self.has({"scout": bad}, "scout must not set skills")
+
+    def test_description_required(self):
+        bad = ROLE.format(name="tester", tools="").replace("description: Use only when the my-tech-team lead dispatches the tester role.\n", "")
+        self.has({"tester": bad}, "description is required")
+
+    def test_hooks_key_is_error(self):
+        bad = ROLE.format(name="qa", tools="").replace("effort: medium", "effort: medium\nhooks: x")
+        self.has({"qa": bad}, "'hooks' is ignored")
+
+    def test_reviewer_cannot_notebookedit(self):
+        bad = ROLE.format(name="reviewer", tools="tools: Read, Skill, NotebookEdit\n")
+        self.has({"reviewer": bad}, "reviewer must not have NotebookEdit")
+
+    def test_scout_needs_tools_line(self):
+        self.has({"scout": self.scout_with("")}, "scout must set tools")
+
+    def test_marketer_needs_skill_tool(self):
+        bad = ROLE.format(name="marketer", tools="tools: Read, Write\n")
+        self.has({"marketer": bad}, "marketer must have Skill")
 
 
 if __name__ == "__main__":
