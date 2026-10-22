@@ -2,6 +2,28 @@
 
 All notable changes to this project are recorded here. The format follows Keep a Changelog, and versions follow Semantic Versioning.
 
+## [0.3.0] - 2026-10-22
+
+### Added
+
+- One Claude Code agent per role in `agents/`, each with its own model, effort and tools, and its role skill preloaded: developer, tester and QA on Sonnet (medium); reviewer on Opus (high) with no edit tools; marketer on Sonnet (medium) with no shell.
+- A Haiku scout agent for the lead's lookups ("where is X", "what calls Y"). It is not a role.
+- The lead dispatches each role to its agent, escalates on failure (more effort, then Opus, then a blocker to the PM) and starts the developer on Opus for data-model, public-API, personal-data or multi-module items.
+- An "Agent models" line in Team setup changes a role's model or effort for a project.
+- `scripts/lint_agents.py` checks the agent files in CI.
+- Research, design, plan and slides for this release in `docs/`.
+
+### Tested
+
+- A spike showed Claude Code honours each agent's model, effort and preloaded skill, and runs the guard hook for agents' commands.
+- One core scenario per role passed at the new settings; a new lead scenario failed with v0.2.1 and passed with v0.3.0; real-agent checks passed.
+
+### Known gaps
+
+- The reviewer and the scout keep a shell for search, so they are not strictly read-only; the guard and the PM's permission mode apply.
+- The marketer can't list or search folders; the lead's brief names each file.
+- The other role scenarios were not rerun at the new settings, and cost per finished task was not measured.
+
 ## [0.2.1] - 2026-10-13
 
 ### Fixed

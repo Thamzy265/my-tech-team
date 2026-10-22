@@ -106,7 +106,7 @@ The written rules in every skill apply on all tools.
 
 ## Test evidence
 
-Each skill was tested with fresh agents before and after the skill was written. See [docs/testing/pressure-tests.md](docs/testing/pressure-tests.md) and [docs/testing/results/](docs/testing/results/). The v0.2.0 results are in [docs/testing/results/v0.2.0.md](docs/testing/results/v0.2.0.md). Example evidence is in [docs/testing/examples/evidence/](docs/testing/examples/evidence/).
+Each skill was tested with fresh agents before and after the skill was written. See [docs/testing/pressure-tests.md](docs/testing/pressure-tests.md) and [docs/testing/results/](docs/testing/results/). The v0.2.0 results are in [docs/testing/results/v0.2.0.md](docs/testing/results/v0.2.0.md), and the v0.3.0 results are in [docs/testing/results/v0.3.0.md](docs/testing/results/v0.3.0.md). Example evidence is in [docs/testing/examples/evidence/](docs/testing/examples/evidence/).
 
 ## Important
 
