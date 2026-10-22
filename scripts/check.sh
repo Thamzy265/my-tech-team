@@ -13,6 +13,9 @@ sh -n hooks/guard.sh
 echo "== lint_skills"
 python3 scripts/lint_skills.py skills
 
+echo "== lint_agents"
+python3 scripts/lint_agents.py agents
+
 echo "== skills-ref validate"
 shopt -s nullglob
 for d in skills/*/; do

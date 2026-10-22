@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my-tech-team v0.3.0</title>
+<!--
+  Deck template: one self-contained file. No external scripts, fonts or trackers.
+  Each <section class="slide"> is one slide. Keys: → ↓ Space PageDown = next; ← ↑ PageUp = back;
+  Home/End = first/last. URL hash (#3) links to a slide. Print (Cmd/Ctrl+P) gives one slide per page.
+-->
+<style>
+  :root {
+    --bg: #f7f6f2; --surface: #ffffff; --text: #1d1d1b; --muted: #5f5e58;
+    --line: #dedcd3; --accent: #c2512f; --accent-soft: #f6e3dc;
+    --ok: #2f7a4f; --ok-soft: #dcefe3; --warn: #9a6a00; --warn-soft: #f7ecd2;
+    --no: #a33a3a; --no-soft: #f6dcdc;
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --surface: #201f1c; --text: #ecebe6; --muted: #a8a69e;
+      --line: #36352f; --accent: #e8805f; --accent-soft: #3a2620;
+      --ok: #6cc290; --ok-soft: #1d3326; --warn: #e0b04d; --warn-soft: #3a3020;
+      --no: #e57f7f; --no-soft: #3d2222;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --surface: #201f1c; --text: #ecebe6; --muted: #a8a69e;
+    --line: #36352f; --accent: #e8805f; --accent-soft: #3a2620;
+    --ok: #6cc290; --ok-soft: #1d3326; --warn: #e0b04d; --warn-soft: #3a3020;
+    --no: #e57f7f; --no-soft: #3d2222;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.45; }
+
+  .slide { display: none; min-height: 100vh; padding: clamp(24px, 6vh, 64px) clamp(16px, 7vw, 96px) 88px; flex-direction: column; justify-content: center; }
+  .slide.active { display: flex; }
+  .slide > .inner { width: 100%; max-width: 1080px; margin: 0 auto; }
+
+  .kicker { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-size: clamp(34px, 6vw, 64px); line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(26px, 4vw, 40px); line-height: 1.12; margin: 0 0 22px; letter-spacing: -0.01em; }
+  h3 { font-size: 17px; margin: 0 0 8px; }
+  p, li { font-size: clamp(16px, 1.6vw, 20px); }
+  p.lead { font-size: clamp(18px, 2.1vw, 24px); color: var(--muted); max-width: 46ch; }
+  ul { margin: 0; padding-left: 1.2em; } li { margin: 6px 0; }
+  .small { font-size: 14px; color: var(--muted); }
+  code { font-family: var(--mono); font-size: .9em; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 760px) { .g2, .g3 { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .card p, .card li { font-size: 16px; margin: 4px 0; }
+  .card.ok { background: var(--ok-soft); border-color: transparent; }
+  .card.warn { background: var(--warn-soft); border-color: transparent; }
+  .card.no { background: var(--no-soft); border-color: transparent; }
+  .card.accent { background: var(--accent-soft); border-color: transparent; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); margin-right: 6px; }
+
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0 14px; }
+  .flow .step { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 16px; }
+  .flow .step b { color: var(--accent); }
+  .flow .arrow { color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .table-wrap { overflow-x: auto; }
+
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--bg); border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .bar button { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; min-width: 44px; min-height: 36px; }
+  .bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .bar .title { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .progress { position: fixed; left: 0; top: 0; height: 3px; background: var(--accent); transition: width .2s ease; }
+
+  @media print {
+    .bar, .progress { display: none; }
+    .slide { display: flex !important; min-height: 0; height: 100vh; page-break-after: always; break-after: page; padding: 40px 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .progress { transition: none; } }
+</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<main id="deck">
+
+
+<section class="slide" aria-label="Title">
+  <div class="inner">
+    <p class="kicker">my-tech-team · v0.3.0 proposal · 20 Oct 2026</p>
+    <h1>The right model for each role</h1>
+    <p class="lead">Each role gets its own model, effort level and tools, based on Anthropic's guidance and what other teams do.</p>
+    <p class="small"><b>Proposal as of 20 Oct 2026.</b> The final design is in the spec (§1 and §3); some details here changed after the spike.<br>Use the arrow keys to move between slides · Print to save as PDF · Research: <code>docs/research/agent-models.md</code></p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Problem">
+  <div class="inner">
+    <p class="kicker">Problem</p>
+    <h2>Today every role is a copy of your session</h2>
+    <div class="grid g2">
+      <div class="card warn"><h3>Today</h3><ul><li>The lead only says "dispatch each role as a subagent"</li><li>Every role runs on your session's model. On Fable that's $10 / $50 per million tokens, even for release notes</li><li>Every role gets every tool. The reviewer could edit code and the marketer could run shell commands; only the written rules stop them</li></ul></div>
+      <div class="card ok"><h3>After v0.3.0</h3><ul><li>Each role is a Claude Code agent with its own model and effort</li><li>Tools match the job: the reviewer can't edit and the marketer can't run commands</li><li>The lead escalates a role to a stronger model when it gets stuck</li><li>The skills don't change, so other AI tools work as before</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="What Anthropic says">
+  <div class="inner">
+    <p class="kicker">Research 1 · Anthropic's docs</p>
+    <h2>Change effort first, and keep strong models where judgement matters</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Model</th><th>$ / M tokens in · out</th><th>Docs say it is for</th></tr></thead>
+      <tbody>
+        <tr><td>Fable 5.1</td><td>10 · 50</td><td>Demanding reasoning, long-horizon agentic work</td></tr>
+        <tr><td>Opus 5.5</td><td>4 · 20</td><td>Long-running agentic coding and knowledge work</td></tr>
+        <tr><td>Sonnet 5.5</td><td>2 · 10</td><td>Best mix of speed and intelligence; "most coding tasks"</td></tr>
+        <tr><td>Haiku 5.5</td><td>0.10 · 0.50</td><td>High-volume, simple work; simple subagent tasks</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3>Effort</h3><p><code>low</code> → <code>max</code>. Low suits simple subagents; high suits hard coding and reasoning. Lower effort often beats a cheaper model, so change effort before you change the model.</p></div>
+      <div class="card accent"><h3>What this means for us</h3><p>Cheap workers save money only on bulk, independent work. Ours is a chain (developer → tester → reviewer → QA). We split roles for independent review and a clean context, so the saving comes from right-sizing each role.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="What others do">
+  <div class="inner">
+    <p class="kicker">Research 2 · Other teams</p>
+    <h2>Most teams agree on the same pattern</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Who does what</h3><ul><li><b>Opus</b> for review and security: Anthropic's code-review plugin, wshobson (202 agents), Claude Code's own example</li><li><b>Sonnet</b> for code, tests and QA: Claude Code costs docs, feature-dev, VoltAgent</li><li><b>Haiku</b> only for bounded, checkable work: search, file lists, simple drafts</li></ul></div>
+      <div class="card"><h3>Lessons learned</h3><ul><li>Reviewers are read-only (Read, Grep, Glob, Bash)</li><li>Always set the model. Leaving it out silently uses the most expensive one</li><li>The cheapest models take 2–3× the turns on multi-step work</li><li>Move up a tier when an agent gets stuck</li><li>Keep the team small; each agent multiplies tokens</li></ul></div>
+    </div>
+    <p class="small">Gap: no published benchmark compares a cheap reviewer with an Opus reviewer. So the reviewer stays strong by caution, not by data.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Proposal">
+  <div class="inner">
+    <p class="kicker">Proposal</p>
+    <h2>One agent per role</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Role</th><th>Model</th><th>Effort</th><th>Tools</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Lead</td><td>your session</td><td>yours</td><td>all</td><td>It talks to you and holds the plan; not an agent file</td></tr>
+        <tr><td>Developer</td><td>Sonnet</td><td>medium</td><td>all</td><td>Codes from a clear brief; tests and review catch misses</td></tr>
+        <tr><td>Tester</td><td>Sonnet</td><td>medium</td><td>all</td><td>Writes tests; a failing run proves each one</td></tr>
+        <tr><td>Reviewer</td><td>Opus</td><td>high</td><td>Read, Grep, Glob, Bash</td><td>The judgement gate; it reports, it never fixes</td></tr>
+        <tr><td>QA</td><td>Sonnet</td><td>medium</td><td>all, including the browser</td><td>Runs real flows; the evidence shows the result</td></tr>
+        <tr><td>Marketer</td><td>Sonnet</td><td>medium</td><td>Read, Write, Edit, Glob, Grep, web</td><td>Drafts only; no shell, so it can't publish</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">Each agent loads its skill, so the rules stay in one place. A project's Team setup can override any role's model, for example "developer: Opus" on a hard codebase.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Lead rules">
+  <div class="inner">
+    <p class="kicker">How the lead dispatches</p>
+    <h2>Escalate on failure, not by default</h2>
+    <div class="flow">
+      <span class="step"><b>1</b> Start at the role's default</span><span class="arrow">→</span>
+      <span class="step"><b>2</b> Fails a review or test round: raise effort</span><span class="arrow">→</span>
+      <span class="step"><b>3</b> Fails again: move up one tier (Sonnet → Opus)</span><span class="arrow">→</span>
+      <span class="step"><b>4</b> Still stuck: blocker to you</span>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h3>Start the developer on Opus when</h3><ul><li>the item changes the data model or a public API</li><li>it touches auth, payments or personal data</li><li>it spans several modules</li></ul></div>
+      <div class="card"><h3>Always</h3><ul><li>Set the agent explicitly; never rely on inherit</li><li>Give each role a self-contained brief, not "read the whole plan"</li><li>Run parallel work only for independent items or read-only checks</li><li>The feature-level security review runs at <code>xhigh</code></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Safety and limits">
+  <div class="inner">
+    <p class="kicker">Safety and limits</p>
+    <h2>Tools now back up the written rules</h2>
+    <div class="grid g3">
+      <div class="card ok"><h3>Stronger</h3><p>The reviewer can't edit and the marketer can't run commands. Agents keep your permission mode; plugin agents can't change it.</p></div>
+      <div class="card"><h3>Claude Code only</h3><p>Codex, Gemini, Copilot and Cursor ignore <code>agents/</code> and keep using the skills as today.</p></div>
+      <div class="card warn"><h3>To prove before release</h3><ul><li>Effort works in plugin agents</li><li>A plugin skill preloads into its agent</li><li>The guard hook fires for agents' commands</li></ul></div>
+    </div>
+    <p class="small">The reviewer keeps Bash to run tests and git, so it could still write files through the shell. Its skill forbids that; the tool limit narrows the risk but doesn't remove it.</p>
+  </div>
+</section>
+
+<section class="slide" aria-label="Cost">
+  <div class="inner">
+    <p class="kicker">Cost</p>
+    <h2>About half the per-token price for four of the five roles</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Output price per million tokens</h3><ul><li>Today on an Opus session: every role $20</li><li>Today on a Fable session: every role $50</li><li>Proposal: developer, tester, QA and marketer $10; reviewer $20</li></ul></div>
+      <div class="card warn"><h3>Not measured yet</h3><p>Per-token price isn't cost per finished task. If a Sonnet role needs extra rounds, the saving shrinks. The test runs report it per role, and a role that does worse goes back to Opus.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Plan and how you'll check it">
+  <div class="inner">
+    <p class="kicker">Plan</p>
+    <h2>Prove the unknowns first, then build</h2>
+    <div class="flow">
+      <span class="step"><b>1</b> Spike: check the 3 unknowns in a test session</span><span class="arrow">→</span>
+      <span class="step"><b>2</b> 5 agent files, plus a CI check that each sets its model and tools</span><span class="arrow">→</span>
+      <span class="step"><b>3</b> Lead dispatch rules</span><span class="arrow">→</span>
+      <span class="step"><b>4</b> Rerun every role's pressure tests on its new model</span><span class="arrow">→</span>
+      <span class="step"><b>5</b> README, reviews, v0.3.0 release</span>
+    </div>
+    <div class="card accent"><h3>How you'll check it</h3><ul><li>In Claude Code, open <code>/agents</code>: five <code>my-tech-team:</code> agents, each showing its model</li><li>Ask the reviewer to "just fix" a typo: it can't, and it reports the fix to the developer instead</li><li>Read the test results: each role passes on its new model, or stays on Opus</li></ul></div>
+  </div>
+</section>
+
+<section class="slide" aria-label="Decisions needed">
+  <div class="inner">
+    <p class="kicker">Decisions needed</p>
+    <h2>Four answers</h2>
+    <div class="grid g2">
+      <div class="card accent"><h3>1. Approve this design?</h3><p>One agent per role, with the model, effort and tools on the proposal slide.</p></div>
+      <div class="card"><h3>2. Marketer on Sonnet or Haiku?</h3><p>Recommendation: Sonnet. Haiku costs 20× less, but the marketer's privacy and claim rules need judgement, and the volume is small. Others put it on Haiku.</p></div>
+      <div class="card"><h3>3. Add a cheap "scout" helper?</h3><p>Haiku, read-only, for questions like "where is X?". It isn't a role and you never brief it. Recommendation: yes, because Explore now uses your session model.</p></div>
+      <div class="card"><h3>4. Reviewer on Opus or Fable?</h3><p>Recommendation: Opus at high effort. Fable costs 2.5× more; Team setup can raise it for a project.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav class="bar" aria-label="Slide controls">
+  <span class="title" id="title">my-tech-team</span>
+  <span id="count" aria-live="polite"></span>
+  <button type="button" id="prev" aria-label="Previous slide">←</button>
+  <button type="button" id="next" aria-label="Next slide">→</button>
+  <button type="button" id="theme" aria-label="Switch light or dark theme">◐</button>
+</nav>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  function fromHash() {
+    var n = parseInt(location.hash.slice(1), 10);
+    return isNaN(n) ? 0 : Math.min(Math.max(n - 1, 0), slides.length - 1);
+  }
+  function show(n) {
+    i = Math.min(Math.max(n, 0), slides.length - 1);
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === i); });
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((i + 1) / slides.length * 100) + '%';
+    document.getElementById('title').textContent = slides[i].getAttribute('aria-label') || document.title;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input, textarea')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) >= 0) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].indexOf(e.key) >= 0) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('prev').addEventListener('click', function () { show(i - 1); });
+  document.getElementById('next').addEventListener('click', function () { show(i + 1); });
+  document.getElementById('theme').addEventListener('click', function () {
+    var root = document.documentElement;
+    var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+  });
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+  show(fromHash());
+})();
+</script>
+</body>
+</html>

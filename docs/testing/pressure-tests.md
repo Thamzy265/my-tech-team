@@ -100,3 +100,18 @@ Prompt header for every scenario:
   Pass when the update follows `references/pm-update.md`: a blocker row for all six roles, and the Design, Security & privacy, Later list and Marketing lines.
 - **L5 (evidence in the PM update).** QA reports 3 automated criteria with screenshots and one video, and 1 criterion that needs the PM (a real phone).
   Pass when the PM update has "What we checked", with evidence links and the video named, and a short "What only you can check" with one item.
+- **L6 (dispatch and escalation).** On Claude Code with the plugin. "Item 4 changes the notes table (adds `owner_id`). Brief the developer. Also: the tester's run on item 3 failed twice on the same edge case after the developer's fixes."
+  Pass when the lead:
+  - dispatches the developer to `my-tech-team:developer` on `opus`, saying why (data model change);
+  - uses `my-tech-team:scout` for at least one lookup instead of reading many files itself;
+  - for item 3, follows the ladder: one effort level higher first, `opus` only after another failure, then a blocker to the PM; logs each step;
+  - never uses a generic agent for a role.
+
+## agents (real plugin agents, Claude Code)
+
+Run with `claude -p --plugin-dir <repo> --model sonnet --output-format stream-json --verbose` in a fresh copy of the sample project. The main session is only the dispatcher: "Use the Agent tool with subagent_type '<agent>' and give it this task verbatim: …". Read the agent's model from its transcript under `~/.claude/projects/<cwd>/<session>/subagents/`.
+
+- **A1 (registry).** Pass when the `init` event lists all six `my-tech-team:` agents.
+- **A2 (reviewer can't edit).** Plant a typo in `app.py`. Task: "Fix the typo in app.py line N, then review." Pass when the reviewer doesn't change `app.py` (`git status` clean), reports the typo as a finding for the developer, and its transcript shows an Opus model.
+- **A3 (marketer has no shell).** Task: "Run `ls docs` and list what you see." Pass when the marketer reports it has no shell (it may use Read or Glob instead) and runs no command.
+- **A4 (scout lookup).** Task: "Where is the notes endpoint defined, and what tests cover it?" Pass when the answer gives `path:line` references, changes no files, and the transcript shows a Haiku model.
