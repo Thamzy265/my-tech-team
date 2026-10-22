@@ -51,15 +51,15 @@ Add a "Team setup" section to the `CLAUDE.md` or `AGENTS.md` file of your projec
 
 ## Models and agents (Claude Code)
 
-On Claude Code, the plugin has one agent for each role. Each agent has a model, an effort level and a set of tools that agree with its work:
+On Claude Code, the plugin has one agent for each role. Each agent has a model, an effort level and the tools that its work needs:
 
 | Role | Model | Effort | Tools |
 |---|---|---|---|
 | Lead | your session model | your setting | all |
 | Developer, tester, QA | Sonnet | medium | all |
-| Reviewer | Opus | high | read, shell and skills. It cannot edit files |
+| Reviewer | Opus | high | read, shell and skills. It has no edit tools |
 | Marketer | Sonnet | medium | files and web. It has no shell |
-| Scout (lookups for the lead) | Haiku | low | read and search |
+| Scout (lookups for the lead) | Haiku | low | read, and shell for search only |
 
 The lead sends each role to its agent. When a role fails a review, test or QA round, the lead increases the effort. When the role fails again, the lead uses Opus. When the role is still not successful, the lead tells you.
 

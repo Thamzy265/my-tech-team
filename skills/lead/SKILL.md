@@ -106,17 +106,17 @@ The plugin ships one agent per role. Dispatch each role to its agent by name. Ne
 |---|---|---|---|
 | Developer | `my-tech-team:developer` | Sonnet · medium | all |
 | Tester | `my-tech-team:tester` | Sonnet · medium | all |
-| Reviewer | `my-tech-team:reviewer` | Opus · high | read, shell and skills; no edits |
+| Reviewer | `my-tech-team:reviewer` | Opus · high | read, shell and skills; no edit tools |
 | QA | `my-tech-team:qa` | Sonnet · medium | all, including the browser |
 | Marketer | `my-tech-team:marketer` | Sonnet · medium | files and web; no shell |
-| Lookups | `my-tech-team:scout` | Haiku · low | read and search only |
+| Lookups | `my-tech-team:scout` | Haiku · low | read, and shell for search only |
 
 - **Lookups.** Send "where is X", "what calls Y" or "which files touch Z" to the scout instead of reading many files yourself. The scout is not a role: it has no gate and doesn't appear in PM updates.
 - **Briefs are self-contained:** the task, the interfaces, the decisions so far and the exact files to read. Never "read the whole plan".
 - **Escalation.** Start at the agent's defaults. When the same item fails a review, test or QA round, dispatch the role again one effort level higher. When it fails again, dispatch it on `opus`, keeping the raised effort. Escalate the role whose work failed (a failing test escalates the developer, not the tester). When it is still stuck, raise a blocker to the PM. Write each step in the status log.
 - **Start the developer on `opus`** when the item changes the data model or a public API, touches auth, payments or personal data, or spans several modules. Say why in the brief.
 - **Feature-level security review:** dispatch the reviewer at `xhigh` effort.
-- **Team setup override.** If Team setup has an "Agent models" line (for example `developer: opus` or `reviewer: fable, xhigh`), use that model and effort every time you dispatch that role.
+- **Team setup override.** If Team setup has an "Agent models" line (for example `developer: opus` or `reviewer: fable, xhigh`), use that model and effort every time you dispatch that role. The override is the starting point for the escalation steps; above `opus`, the next step is `fable` or a blocker to the PM.
 - **Parallel work** only for independent items or read-only checks. Steps for one item stay in order.
 - **No agents** (the skills were copied without the plugin): dispatch a subagent per role, tell it to use its skill, and set its model and effort to match the table.
 
@@ -288,5 +288,5 @@ Then give the chat summary the PM asked for, after the deck path.
 | Approving a host change yourself, or letting a role run it on your say-so | Only the PM approves; pass the ask on with command, why, effect and undo |
 | Asking the PM again for a tool already approved | Record approvals under "Approved tools" in Team setup |
 | Asking the developer for test-only commits | Test and code are committed together, with the failing run in the hand-off |
-| Dispatching a generic agent for a role | Use the role's `my-tech-team:` agent; a generic agent runs on the PM's model with every tool |
-| Jumping to Opus or Fable the first time a role struggles | Raise effort first, then one tier up, then a blocker to the PM |
+| *On Claude Code:* dispatching a generic agent for a role | Use the role's `my-tech-team:` agent; a generic agent runs on the PM's model with every tool |
+| *On Claude Code:* jumping to Opus or Fable the first time a role struggles | Raise effort first, then one tier up, then a blocker to the PM |
