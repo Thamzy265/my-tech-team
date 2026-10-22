@@ -113,7 +113,7 @@ The plugin ships one agent per role. Dispatch each role to its agent by name. Ne
 
 - **Lookups.** Send "where is X", "what calls Y" or "which files touch Z" to the scout instead of reading many files yourself. The scout is not a role: it has no gate and doesn't appear in PM updates.
 - **Briefs are self-contained:** the task, the interfaces, the decisions so far and the exact files to read. Never "read the whole plan".
-- **Escalation.** Start at the agent's defaults. When the same item fails a review, test or QA round, dispatch the role again one effort level higher. When it fails again, dispatch it on `opus`. When it is still stuck, raise a blocker to the PM. Write each step in the status log.
+- **Escalation.** Start at the agent's defaults. When the same item fails a review, test or QA round, dispatch the role again one effort level higher. When it fails again, dispatch it on `opus`, keeping the raised effort. Escalate the role whose work failed (a failing test escalates the developer, not the tester). When it is still stuck, raise a blocker to the PM. Write each step in the status log.
 - **Start the developer on `opus`** when the item changes the data model or a public API, touches auth, payments or personal data, or spans several modules. Say why in the brief.
 - **Feature-level security review:** dispatch the reviewer at `xhigh` effort.
 - **Team setup override.** If Team setup has an "Agent models" line (for example `developer: opus` or `reviewer: fable, xhigh`), use that model and effort every time you dispatch that role.

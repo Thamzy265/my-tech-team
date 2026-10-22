@@ -16,11 +16,6 @@ NO_SHELL = {"marketer"}
 NEEDS_SKILL_TOOL = {"reviewer", "marketer"}
 
 
-def strip_comment(value):
-    """Drop a YAML comment: a '#' at the start or preceded by whitespace."""
-    return re.sub(r"(^|\s)#.*$", "", value).strip()
-
-
 def unquote(item):
     item = item.strip()
     if len(item) >= 2 and item[0] == item[-1] and item[0] in "\"'":
